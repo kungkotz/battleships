@@ -1,38 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@900&display=swap');
+
+*,
+::before,
+::after {
+	margin: 0;
+	box-sizing: border-box;
+}
+
 .App {
-  text-align: center;
+	text-align: center;
+	background-color: #f3f3f3;
+	min-height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.btn {
+	background-color: #005eb8;
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+	color: #fff;
+	cursor: pointer;
+	font-size: 1rem;
+	font-weight: 600;
+	padding: 0.5rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
+.landing-page {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
+	.container {
+		margin-top: 5rem;
+		margin-bottom: 3rem;
+		flex: 0 0 100%;
+	}
 
-.App-link {
-  color: #61dafb;
-}
+	h1 {
+		font-family: 'Big Shoulders Text', cursive;
+		font-size: clamp(2rem, 12vw, 10rem);
+	}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	.shipImage {
+		width: clamp(8rem, 20vw, 20rem);
+	}
+
+	.form-group {
+		display: flex;
+		align-items: stretch;
+		gap: 0.5rem;
+	}
 }
