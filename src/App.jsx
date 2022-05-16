@@ -8,7 +8,23 @@ function App() {
 
 	return (
 		<div className='App'>
-			<h1>BATTLESHIPS BY GAR</h1>
+			<div className='landing-page'>
+				<h1>BATTLESHIPS</h1>
+
+				<form>
+					<div className='form-group'>
+						<input
+							type='text'
+							id='username'
+							required
+							placeholder='Enter username...'
+						/>
+						<button type='submit' className='btn'>
+							Start Game
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	)
 }
