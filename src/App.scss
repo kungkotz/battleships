@@ -4,12 +4,24 @@
 ::before,
 ::after {
 	margin: 0;
+	box-sizing: border-box;
 }
 
 .App {
 	text-align: center;
 	background-color: #f3f3f3;
 	min-height: 100vh;
+}
+
+.btn {
+	background-color: #005eb8;
+	border: 1px solid transparent;
+	border-radius: 0.25rem;
+	color: #fff;
+	cursor: pointer;
+	font-size: 1rem;
+	font-weight: 600;
+	padding: 0.5rem;
 }
 
 .landing-page {
@@ -24,5 +36,11 @@
 		font-family: 'Big Shoulders Text', cursive;
 		font-size: clamp(2rem, 12vw, 10rem);
 		flex: 0 0 100%;
+	}
+
+	.form-group {
+		display: flex;
+		align-items: stretch;
+		gap: 0.5rem;
 	}
 }
