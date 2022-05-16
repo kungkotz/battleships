@@ -27,7 +27,7 @@ function App() {
 		<div className='App'>
 			{/* when username is entered in landing page, game board will show */}
 			{username ? (
-				<GameBoard />
+				<GameBoard socket={socket} />
 			) : (
 				<LandingPage
 					onHandleUsernameSubmit={handleUsernameSubmit}

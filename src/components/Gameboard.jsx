@@ -1,4 +1,5 @@
-const Gameboard = () => {
+const Gameboard = ({ socket }) => {
+	console.log(socket)
 	return (
 		<div>
 			<h2>Let's play some Battleship!</h2>
