@@ -1,7 +1,13 @@
+import ShipImg from '../assets/ship.png'
+
 const LandingPage = ({ onHandleUsernameSubmit, userInput, setUserInput }) => {
 	return (
 		<div className='landing-page'>
-			<h1>BATTLESHIPS</h1>
+			<div className='container'>
+				<h1>BATTLESHIPS</h1>
+
+				<img src={ShipImg} alt='Battleship' className='shipImage' />
+			</div>
 
 			<form onSubmit={onHandleUsernameSubmit}>
 				<div className='form-group'>
