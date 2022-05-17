@@ -1,5 +1,5 @@
 const Waiting = () => {
-	return <div>Waiting</div>
-}
+	return <div>Waiting</div>;
+};
 
-export default Waiting
+export default Waiting;

@@ -1,5 +1,5 @@
 const Gameboard = ({ socket }) => {
-	console.log(socket)
+	console.log(socket);
 
 	// handle battle board and ships then start game
 
@@ -12,7 +12,7 @@ const Gameboard = ({ socket }) => {
 			<p>Player 1 grid here</p>
 			<p>Player 2 grid somewhere</p>
 		</div>
-	)
-}
+	);
+};
 
-export default Gameboard
+export default Gameboard;
