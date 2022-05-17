@@ -1,4 +1,4 @@
-const GameBoard = ({ socket }) => {
+const GameBoard = ({ socket, username, opponentName }) => {
 	console.log(socket);
 
 	// Handle battle board and ships then start game
@@ -9,8 +9,8 @@ const GameBoard = ({ socket }) => {
 		<div>
 			<h2>Let's play some Battleship!</h2>
 
-			<p>Player 1 grid here</p>
-			<p>Player 2 grid somewhere</p>
+			<p>{username} here</p>
+			<p> {opponentName} somewhere</p>
 		</div>
 	);
 };

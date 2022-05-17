@@ -11,15 +11,20 @@ function App() {
 
 	const [username, setUsername] = useState('');
 	const [userInput, setUserInput] = useState('');
+	const [opponentName, setOpponentName] = useState('');
 
 	const handleUsernameSubmit = (e) => {
 		e.preventDefault();
 		setUsername(userInput);
 		socket.emit('player:username', userInput);
 		setUserInput('');
+		socket.emit('user:joined', username);
 	};
 
 	useEffect(() => {
+		socket.on('username', function (username) {
+			setOpponentName(username);
+		});
 		console.log(username);
 	}, [username]);
 
@@ -27,7 +32,11 @@ function App() {
 		<div className='App'>
 			{/* when username is entered in landing page, game board will show */}
 			{username ? (
-				<GameBoard socket={socket} />
+				<GameBoard
+					socket={socket}
+					username={username}
+					opponentName={opponentName}
+				/>
 			) : (
 				<LandingPage
 					onHandleUsernameSubmit={handleUsernameSubmit}
