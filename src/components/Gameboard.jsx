@@ -1,9 +1,16 @@
-const GameBoard = ({ socket, username, opponentName }) => {
-	console.log(socket);
+import { useEffect, useState } from 'react';
 
+const GameBoard = ({ socket, username, opponentName }) => {
+	const [leftGame, setLeftGame] = useState(false);
 	// Handle battle board and ships then start game
 
 	// Handle hit and miss
+
+	useEffect(() => {
+		socket.on('player:disconnected', function (boolean) {
+			setLeftGame(boolean);
+		});
+	}, [socket]);
 
 	return (
 		<div>
@@ -11,6 +18,8 @@ const GameBoard = ({ socket, username, opponentName }) => {
 
 			<p>{username} here</p>
 			<p> {opponentName} somewhere</p>
+
+			{leftGame === true && <h1>{opponentName} left the game</h1>}
 		</div>
 	);
 };

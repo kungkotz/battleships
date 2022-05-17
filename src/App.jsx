@@ -7,11 +7,10 @@ import GameBoard from './components/GameBoard';
 const socket = socketio.connect(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-	// console.log(socket)
-
 	const [username, setUsername] = useState('');
 	const [userInput, setUserInput] = useState('');
 	const [opponentName, setOpponentName] = useState('');
+	const [fullGame, setFullGame] = useState(false);
 
 	const handleUsernameSubmit = (e) => {
 		e.preventDefault();
@@ -25,7 +24,11 @@ function App() {
 		socket.on('username', function (username) {
 			setOpponentName(username);
 		});
-		console.log(username);
+
+		socket.on('game:full', (boolean, playersArray) => {
+			setFullGame(boolean);
+			setUsername(playersArray.length);
+		});
 	}, [username]);
 
 	return (
@@ -43,6 +46,13 @@ function App() {
 					userInput={userInput}
 					setUserInput={setUserInput}
 				/>
+			)}
+
+			{fullGame && username === 0 && (
+				<div>
+					<h1>SORRY GAME FULL</h1>
+					<p>try again later</p>
+				</div>
 			)}
 		</div>
 	);
