@@ -1,7 +1,7 @@
 const GameBoard = ({ socket }) => {
 	console.log(socket);
 
-	// Handle battle board and ships then start game
+	// Handle battle board and ships then start game.
 
 	// Handle hit and miss
 
