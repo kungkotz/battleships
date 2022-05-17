@@ -1,4 +1,4 @@
-const Gameboard = ({ socket }) => {
+const GameBoard = ({ socket }) => {
 	console.log(socket);
 
 	// Handle battle board and ships then start game
@@ -15,4 +15,4 @@ const Gameboard = ({ socket }) => {
 	);
 };
 
-export default Gameboard;
+export default GameBoard;
