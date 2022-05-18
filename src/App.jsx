@@ -7,12 +7,12 @@ import GameBoard from './components/GameBoard';
 const socket = socketio.connect(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-	// console.log(socket)
-
 	const [username, setUsername] = useState('');
 	const [userInput, setUserInput] = useState('');
 	const [opponentName, setOpponentName] = useState('');
+	const [fullGame, setFullGame] = useState(false);
 
+	// Handles username when player submits
 	const handleUsernameSubmit = (e) => {
 		e.preventDefault();
 		setUsername(userInput);
@@ -25,7 +25,11 @@ function App() {
 		socket.on('username', function (username) {
 			setOpponentName(username);
 		});
-		console.log(username);
+
+		socket.on('game:full', (boolean, playersArray) => {
+			setFullGame(boolean);
+			setUsername(playersArray.length);
+		});
 	}, [username]);
 
 	return (
@@ -38,12 +42,20 @@ function App() {
 					opponentName={opponentName}
 				/>
 			) : (
-					<LandingPage
-						onHandleUsernameSubmit={handleUsernameSubmit}
-						userInput={userInput}
-						setUserInput={setUserInput}
-					/>
-				)}
+				<LandingPage
+					onHandleUsernameSubmit={handleUsernameSubmit}
+					userInput={userInput}
+					setUserInput={setUserInput}
+				/>
+			)}
+
+			{/* If there is an ongoing game this will show */}
+			{fullGame && username === 0 && (
+				<div>
+					<h1>SORRY GAME FULL</h1>
+					<p>try again later</p>
+				</div>
+			)}
 		</div>
 	);
 }
