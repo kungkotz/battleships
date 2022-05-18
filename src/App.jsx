@@ -38,12 +38,12 @@ function App() {
 					opponentName={opponentName}
 				/>
 			) : (
-				<LandingPage
-					onHandleUsernameSubmit={handleUsernameSubmit}
-					userInput={userInput}
-					setUserInput={setUserInput}
-				/>
-			)}
+					<LandingPage
+						onHandleUsernameSubmit={handleUsernameSubmit}
+						userInput={userInput}
+						setUserInput={setUserInput}
+					/>
+				)}
 		</div>
 	);
 }
