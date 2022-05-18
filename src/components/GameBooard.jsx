@@ -1,13 +1,13 @@
 import "../styles/Gameboard.scss";
 import { useState, useEffect } from "react"
 
-const Gameboard = ({ socket }) => {
+const GameBoard = ({ socket }) => {
 	const [guess, setGuess] = useState(0)
 	const [gameStatus, setGameStatus] = useState(true)
 	const yourDivBoxes = []
 	const enemyDivBoxes = [];
 	const yourShips = ['y0', 'y1', 'y2', 'y3']
-	const enemyShips = [];
+	const enemyShips = ['e1', 'e2',];
 
 	// if (gameStatus === true) {
 	// 	console.log('här försvinner div och spelet börjar')
@@ -61,4 +61,4 @@ const Gameboard = ({ socket }) => {
 	)
 }
 
-export default Gameboard
+export default GameBoard
