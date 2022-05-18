@@ -12,6 +12,7 @@ function App() {
 	const [opponentName, setOpponentName] = useState('');
 	const [fullGame, setFullGame] = useState(false);
 
+	// Handles username when player submits
 	const handleUsernameSubmit = (e) => {
 		e.preventDefault();
 		setUsername(userInput);
@@ -48,6 +49,7 @@ function App() {
 				/>
 			)}
 
+			{/* If there is an ongoing game this will show */}
 			{fullGame && username === 0 && (
 				<div>
 					<h1>SORRY GAME FULL</h1>

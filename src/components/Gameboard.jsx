@@ -19,6 +19,7 @@ const GameBoard = ({ socket, username, opponentName }) => {
 			<p>{username} here</p>
 			<p> {opponentName} somewhere</p>
 
+			{/* Lets player know if opponent left game */}
 			{leftGame === true && <h1>{opponentName} left the game</h1>}
 		</div>
 	);
