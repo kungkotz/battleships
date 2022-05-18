@@ -1,7 +1,8 @@
 import "../styles/Gameboard.scss";
 import { useState, useEffect } from "react"
 
-const GameBoard = ({ socket }) => {
+const GameBoard = ({ socket, username, opponentName }) => {
+	const [leftGame, setLeftGame] = useState(false);
 	const [guess, setGuess] = useState(0)
 	const [gameStatus, setGameStatus] = useState(true)
 	const yourDivBoxes = []
@@ -45,9 +46,24 @@ const GameBoard = ({ socket }) => {
 		yourDivBoxes.push(<div className={`y${i}`} onClick={clickOnGrid} key={`${i}`}></div >)
 	}
 
+	useEffect(() => {
+		socket.on('player:disconnected', function (boolean) {
+			setLeftGame(boolean);
+		});
+	}, [socket]);
+
 	return (
 		<div>
+    <div>
 			<h2>Let's play some Battleship!</h2>
+
+
+			<p>{username} here</p>
+			<p> {opponentName} somewhere</p>
+
+			{/* Lets player know if opponent left game */}
+			{leftGame === true && <h1>{opponentName} left the game</h1>}
+</div>
 			<main>
 				<section>
 					<p>Your guesses: {guess}</p>
@@ -57,6 +73,7 @@ const GameBoard = ({ socket }) => {
 				</section>
 				<section></section>
 			</main>
+
 		</div>
 	)
 }
