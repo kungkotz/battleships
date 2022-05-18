@@ -2,7 +2,7 @@ import './App.scss'
 import socketio from 'socket.io-client'
 import { useEffect, useState } from 'react'
 import LandingPage from './components/LandingPage'
-import GameBoard from './components/Gameboard'
+import GameBoard from './components/GameBoard'
 
 const socket = socketio.connect(process.env.REACT_APP_SOCKET_URL)
 
