@@ -7,33 +7,54 @@ import GameBoard from './components/GameBoard';
 const socket = socketio.connect(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-	// console.log(socket)
-
 	const [username, setUsername] = useState('');
 	const [userInput, setUserInput] = useState('');
+	const [opponentName, setOpponentName] = useState('');
+	const [fullGame, setFullGame] = useState(false);
 
+	// Handles username when player submits
 	const handleUsernameSubmit = (e) => {
 		e.preventDefault();
 		setUsername(userInput);
 		socket.emit('player:username', userInput);
 		setUserInput('');
+		socket.emit('user:joined', username);
 	};
 
 	useEffect(() => {
-		console.log(username);
+		socket.on('username', function (username) {
+			setOpponentName(username);
+		});
+
+		socket.on('game:full', (boolean, playersArray) => {
+			setFullGame(boolean);
+			setUsername(playersArray.length);
+		});
 	}, [username]);
 
 	return (
 		<div className='App'>
 			{/* when username is entered in landing page, game board will show */}
 			{username ? (
-				<GameBoard socket={socket} />
+				<GameBoard
+					socket={socket}
+					username={username}
+					opponentName={opponentName}
+				/>
 			) : (
 				<LandingPage
 					onHandleUsernameSubmit={handleUsernameSubmit}
 					userInput={userInput}
 					setUserInput={setUserInput}
 				/>
+			)}
+
+			{/* If there is an ongoing game this will show */}
+			{fullGame && username === 0 && (
+				<div>
+					<h1>SORRY GAME FULL</h1>
+					<p>try again later</p>
+				</div>
 			)}
 		</div>
 	);
