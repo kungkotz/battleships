@@ -1,39 +1,39 @@
-import './App.scss';
-import socketio from 'socket.io-client';
-import { useEffect, useState } from 'react';
-import LandingPage from './components/LandingPage';
-import GameBoard from './components/GameBoard';
+import "./App.scss";
+import socketio from "socket.io-client";
+import { useEffect, useState } from "react";
+import LandingPage from "./components/LandingPage";
+import GameBoard from "./components/GameBoard";
 
 const socket = socketio.connect(process.env.REACT_APP_SOCKET_URL);
 
 function App() {
-	const [username, setUsername] = useState('');
-	const [userInput, setUserInput] = useState('');
-	const [opponentName, setOpponentName] = useState('');
+	const [username, setUsername] = useState("");
+	const [userInput, setUserInput] = useState("");
+	const [opponentName, setOpponentName] = useState("");
 	const [fullGame, setFullGame] = useState(false);
 
 	// Handles username when player submits
 	const handleUsernameSubmit = (e) => {
 		e.preventDefault();
 		setUsername(userInput);
-		socket.emit('player:username', userInput);
-		setUserInput('');
-		socket.emit('user:joined', username);
+		socket.emit("player:username", userInput);
+		setUserInput("");
+		socket.emit("user:joined", username);
 	};
 
 	useEffect(() => {
-		socket.on('username', function (username) {
+		socket.on("username", function (username) {
 			setOpponentName(username);
 		});
 
-		socket.on('game:full', (boolean, playersArray) => {
+		socket.on("game:full", (boolean, playersArray) => {
 			setFullGame(boolean);
 			setUsername(playersArray.length);
 		});
 	}, [username]);
 
 	return (
-		<div className='App'>
+		<div className="App">
 			{/* when username is entered in landing page, game board will show */}
 			{username ? (
 				<GameBoard
