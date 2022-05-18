@@ -2,7 +2,7 @@ import './App.scss'
 import socketio from 'socket.io-client'
 import { useEffect, useState } from 'react'
 import LandingPage from './components/LandingPage'
-import GameBoard from './components/GameBoard'
+import GameBoard from './components/Gameboard'
 
 const socket = socketio.connect(process.env.REACT_APP_SOCKET_URL)
 
@@ -29,12 +29,12 @@ function App() {
 			{username ? (
 				<GameBoard socket={socket} />
 			) : (
-				<LandingPage
-					onHandleUsernameSubmit={handleUsernameSubmit}
-					userInput={userInput}
-					setUserInput={setUserInput}
-				/>
-			)}
+					<LandingPage
+						onHandleUsernameSubmit={handleUsernameSubmit}
+						userInput={userInput}
+						setUserInput={setUserInput}
+					/>
+				)}
 		</div>
 	)
 }
