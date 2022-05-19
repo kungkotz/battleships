@@ -9,6 +9,8 @@ const GameBoard = ({ socket, username, opponentName }) => {
 	const enemyDivBoxes = [];
 	const yourShips = ["y0", "y1", "y2", "y3"];
 	const enemyShips = ["e1", "e2", "e3", "e4"];
+	const [hit, setHit] = useState();
+	const [miss, setMiss] = useState();
 
 	// if (gameStatus === true) {
 	// 	console.log('här försvinner div och spelet börjar')
@@ -32,13 +34,15 @@ const GameBoard = ({ socket, username, opponentName }) => {
 
 	const clickOnGrid = (e) => {
 		setGuess(guess + 1);
-
+		// set ID for each type of ship and emit id for ship type
 		if (enemyShips.includes(e.target.className)) {
 			postBoxClick(e.target.className, true);
+			socket.emit("player:hit", e.target.className, username);
 		}
 
 		if (!enemyShips.includes(e.target.className)) {
 			postBoxClick(e.target.className, false);
+			socket.emit("player:miss", e.target.className, username);
 		}
 	};
 
