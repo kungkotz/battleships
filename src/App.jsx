@@ -9,7 +9,9 @@ const socket = socketio.connect(process.env.REACT_APP_SOCKET_URL);
 function App() {
 	const [username, setUsername] = useState("");
 	const [userInput, setUserInput] = useState("");
-	const [opponentName, setOpponentName] = useState("");
+
+	const [user, setUser] = useState("");
+	const [opponent, setOpponent] = useState("");
 	const [fullGame, setFullGame] = useState(false);
 
 	// Handles username when player submits
@@ -18,12 +20,14 @@ function App() {
 		setUsername(userInput);
 		socket.emit("player:username", userInput);
 		setUserInput("");
-		socket.emit("user:joined", username);
 	};
 
 	useEffect(() => {
-		socket.on("username", function (username) {
-			setOpponentName(username);
+		socket.on("players:profiles", function (players) {
+			if (players.length > 1) {
+				setUser(players[0]);
+				setOpponent(players[1]);
+			}
 		});
 
 		socket.on("game:full", (boolean, playersArray) => {
@@ -36,11 +40,7 @@ function App() {
 		<div className="App">
 			{/* when username is entered in landing page, game board will show */}
 			{username ? (
-				<GameBoard
-					socket={socket}
-					username={username}
-					opponentName={opponentName}
-				/>
+				<GameBoard socket={socket} user={user} opponent={opponent} />
 			) : (
 				<LandingPage
 					onHandleUsernameSubmit={handleUsernameSubmit}

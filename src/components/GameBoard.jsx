@@ -1,10 +1,9 @@
 import "../styles/GameBoard.scss";
 import { useState, useEffect } from "react";
 
-const GameBoard = ({ socket, username, opponentName }) => {
-	const [myTurn, setMyTurn] = useState(false);
-	const [myNumberOfShips, setMyNumberOfShips] = useState(4);
-	const [opponentNumberOfShips, setOpponentNumberOfShips] = useState(4);
+const GameBoard = ({ socket, username, opponent }) => {
+	const [currentPlayer, setCurrentPlayer] = useState("user");
+	const [turn, setTurn] = useState(false);
 	const [leftGame, setLeftGame] = useState(false);
 	const [guess, setGuess] = useState(0);
 	const [gameStatus, setGameStatus] = useState(true);
@@ -99,10 +98,10 @@ const GameBoard = ({ socket, username, opponentName }) => {
 				<h2>Let's play some Battleship!</h2>
 
 				<p>{username} here</p>
-				<p> {opponentName} somewhere</p>
+				<p> {opponent} somewhere</p>
 
 				{/* Lets player know if opponent left game */}
-				{leftGame === true && <h1>{opponentName} left the game</h1>}
+				{leftGame === true && <h1>{opponent} left the game</h1>}
 			</div>
 			<main>
 				<section>
