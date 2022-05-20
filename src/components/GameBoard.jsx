@@ -2,15 +2,16 @@ import "../styles/GameBoard.scss";
 import { useState, useEffect } from "react";
 
 const GameBoard = ({ socket, username, opponentName }) => {
+	const [myTurn, setMyTurn] = useState(false);
+	const [myNumberOfShips, setMyNumberOfShips] = useState(4);
+	const [opponentNumberOfShips, setOpponentNumberOfShips] = useState(4);
 	const [leftGame, setLeftGame] = useState(false);
 	const [guess, setGuess] = useState(0);
 	const [gameStatus, setGameStatus] = useState(true);
 	const yourDivBoxes = [];
 	const enemyDivBoxes = [];
-	const yourShips = ["y0", "y1", "y2", "y3"];
+	const myShips = ["m91", "m92", "m93", "m94"];
 	const enemyShips = ["e1", "e2", "e3", "e4"];
-	const [hit, setHit] = useState();
-	const [miss, setMiss] = useState();
 
 	// if (gameStatus === true) {
 	// 	console.log('här försvinner div och spelet börjar')
@@ -37,17 +38,18 @@ const GameBoard = ({ socket, username, opponentName }) => {
 		// set ID for each type of ship and emit id for ship type
 		if (enemyShips.includes(e.target.className)) {
 			postBoxClick(e.target.className, true);
-			socket.emit("player:hit", e.target.className, username);
+			socket.emit("player:shot-hit", e.target.className, username, socket.id);
+			console.log(socket.id);
 		}
 
 		if (!enemyShips.includes(e.target.className)) {
 			postBoxClick(e.target.className, false);
-			socket.emit("player:miss", e.target.className, username);
+			socket.emit("player:shot-miss", e.target.className, username, socket.id);
 		}
 	};
 
 	for (let i = 0; i < 100; i++) {
-		yourDivBoxes.push(<div className={`y${i}`} key={`${i}`}></div>);
+		yourDivBoxes.push(<div className={`m${i}`} key={`${i}`}></div>);
 	}
 
 	for (let i = 0; i < 100; i++) {
@@ -55,6 +57,18 @@ const GameBoard = ({ socket, username, opponentName }) => {
 			<div className={`e${i}`} onClick={clickOnGrid} key={`${i}`}></div>
 		);
 	}
+
+	const shotReplied = (id) => {
+		if (myShips.includes(id)) {
+			document.querySelector(`.${id}`).style.backgroundColor = "green";
+			document.querySelector(`.${id}`).style.pointerEvents = "none";
+		}
+
+		if (!myShips.includes(id)) {
+			document.querySelector(`.${id}`).style.backgroundColor = "red";
+			document.querySelector(`.${id}`).style.pointerEvents = "none";
+		}
+	};
 
 	// yourShips.forEach(e => {
 	// 	console.log(e)
@@ -65,6 +79,18 @@ const GameBoard = ({ socket, username, opponentName }) => {
 		socket.on("player:disconnected", function (boolean) {
 			setLeftGame(boolean);
 		});
+
+		socket.on("player:hit", (id) => {
+			console.log("Its a hit", id);
+			shotReplied(id);
+		});
+
+		socket.on("player:missed", (id) => {
+			console.log("its a miss", id);
+			shotReplied(id);
+		});
+
+		// Använd socket.off för att sluta lyssna på event. Kan användas på click så att det blir den andras tur?
 	}, [socket]);
 
 	return (
