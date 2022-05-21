@@ -27,8 +27,6 @@ function App() {
 			if (players.length === 2) {
 				setUser(players[0]);
 				setOpponent(players[1]);
-
-				console.log("user", user, "opponent", opponent);
 			}
 		});
 
