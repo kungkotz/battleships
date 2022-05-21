@@ -36,7 +36,7 @@ function App() {
 			setFullGame(boolean);
 			setUsername(playersArray.length);
 		});
-	}, [username]);
+	}, [opponent, user, username]);
 
 	return (
 		<div className="App">
@@ -53,9 +53,9 @@ function App() {
 
 			{/* If there is an ongoing game this will show */}
 			{fullGame && username === 0 && (
-				<div>
-					<h1>SORRY GAME FULL</h1>
-					<p>try again later</p>
+				<div className="alert">
+					<h2>Avast ye! Ongoing battle...</h2>
+					<p className="muted">try again later</p>
 				</div>
 			)}
 		</div>
