@@ -18,15 +18,17 @@ function App() {
 	const handleUsernameSubmit = (e) => {
 		e.preventDefault();
 		setUsername(userInput);
-		socket.emit("player:username", userInput);
+		socket.emit("player:joined", userInput);
 		setUserInput("");
 	};
 
 	useEffect(() => {
 		socket.on("players:profiles", function (players) {
-			if (players.length > 1) {
+			if (players.length === 2) {
 				setUser(players[0]);
 				setOpponent(players[1]);
+
+				console.log("user", user, "opponent", opponent);
 			}
 		});
 
