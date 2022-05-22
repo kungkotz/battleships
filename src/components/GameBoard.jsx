@@ -1,45 +1,33 @@
 import "../styles/GameBoard.scss";
+import { createBoard } from "../helpers/helpers";
 import { useState, useEffect } from "react";
 
-const GameBoard = ({ socket, user, opponent, username }) => {
+const GameBoard = ({ socket, user, opponent }) => {
 	const [leftGame, setLeftGame] = useState(false);
 
 	const myDivBoxes = [];
 	const enemyDivBoxes = [];
 
-	for (let i = 0; i < 100; i++) {
-		enemyDivBoxes.push(
-			<div className={`e${i}`} data-id={i} key={`${i}`}></div>
-		);
-	}
-
-	for (let i = 0; i < 100; i++) {
-		myDivBoxes.push(<div className={`m${i}`} data-id={i} key={`${i}`}></div>);
-	}
+	createBoard(myDivBoxes, "m");
+	createBoard(enemyDivBoxes, "e");
 
 	const clickOnGrid = (e) => {
 		socket.emit("player:shot-fired", e.target.dataset.id);
 		console.log(e.target.dataset.id);
 	};
 
-	const handleHit = (target, shooterName) => {
-		if (shooterName === username) {
-			document.querySelector(`.e${target}`).style.backgroundColor = "red";
-			document.querySelector(`.e${target}`).style.pointerEvents = "none";
-		} else {
-			document.querySelector(`.m${target}`).style.backgroundColor = "red";
-			document.querySelector(`.m${target}`).style.pointerEvents = "none";
-		}
+	const handleHit = (target) => {
+		document.querySelector(`.m${target}`).style.backgroundColor = "red";
+		document.querySelector(`.m${target}`).style.pointerEvents = "none";
+
+		socket.emit("player:shot-reply", target, socket.id);
 	};
 
-	const handleMiss = (target, shooterName) => {
-		if (shooterName === username) {
-			document.querySelector(`.e${target}`).style.backgroundColor = "green";
-			document.querySelector(`.e${target}`).style.pointerEvents = "none";
-		} else {
-			document.querySelector(`.m${target}`).style.backgroundColor = "green";
-			document.querySelector(`.m${target}`).style.pointerEvents = "none";
-		}
+	const handleMiss = (target) => {
+		document.querySelector(`.m${target}`).style.backgroundColor = "black";
+		document.querySelector(`.m${target}`).style.pointerEvents = "none";
+
+		socket.emit("player:shot-reply", target, socket.id);
 	};
 
 	const playerLeftGame = (boolean) => {
@@ -50,8 +38,9 @@ const GameBoard = ({ socket, user, opponent, username }) => {
 		socket.on("player:disconnected", playerLeftGame);
 
 		socket.on("player:hit", handleHit);
+
 		socket.on("player:miss", handleMiss);
-	}, [socket, user, opponent, username]);
+	}, [socket, user, opponent]);
 
 	return (
 		<div>
@@ -71,11 +60,12 @@ const GameBoard = ({ socket, user, opponent, username }) => {
 			</div>
 			<main>
 				<section>
+					<h3>Your board</h3>
 					<div className="yourBoard">{myDivBoxes}</div>
 					<p>{username}</p>
 				</section>
 				<section>
-					<p>Enemy :P click on this board</p>
+					<h3>Enemy board</h3>
 					<div className="enemyBoard" onClick={clickOnGrid}>
 						{enemyDivBoxes}
 					</div>

@@ -26,8 +26,13 @@ function App() {
 	useEffect(() => {
 		socket.on("players:profiles", function (players) {
 			if (players.length === 2) {
-				setUser(players[0]);
-				setOpponent(players[1]);
+				const thisSocket = players.find((player) => player.id === socket.id);
+				thisSocket.currentPlayer = "user";
+				const otherSocket = players.find((player) => player.id !== socket.id);
+				otherSocket.currentPlayer = "enemy";
+
+				setUser(thisSocket);
+				setOpponent(otherSocket);
 			}
 		});
 
