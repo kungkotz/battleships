@@ -21,6 +21,7 @@ function App() {
 		socket.emit("player:joined", userInput);
 		setUserInput("");
 	};
+	console.log("username", username);
 
 	useEffect(() => {
 		socket.on("players:profiles", function (players) {
@@ -45,7 +46,12 @@ function App() {
 		<div className="App">
 			{/* when username is entered in landing page, game board will show */}
 			{username ? (
-				<GameBoard socket={socket} user={user} opponent={opponent} />
+				<GameBoard
+					socket={socket}
+					user={user}
+					opponent={opponent}
+					username={username}
+				/>
 			) : (
 				<LandingPage
 					onHandleUsernameSubmit={handleUsernameSubmit}

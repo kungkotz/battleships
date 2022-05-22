@@ -62,6 +62,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 				<section>
 					<h3>Your board</h3>
 					<div className="yourBoard">{myDivBoxes}</div>
+					<p>{username}</p>
 				</section>
 				<section>
 					<h3>Enemy board</h3>
