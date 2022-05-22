@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@900&display=swap");
 
 *,
 ::before,
@@ -11,6 +11,8 @@
 	text-align: center;
 	background-color: #f3f3f3;
 	min-height: 100vh;
+	background-image: url(../public/background.jpg);
+	background-size: cover;
 }
 
 .btn {
@@ -37,7 +39,7 @@
 	}
 
 	h1 {
-		font-family: 'Big Shoulders Text', cursive;
+		font-family: "Big Shoulders Text", cursive;
 		font-size: clamp(2rem, 12vw, 10rem);
 	}
 

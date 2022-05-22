@@ -1,39 +1,41 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
 
 main {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
 }
 
 .yourBoard {
-    border: 1px solid black;
-    height: 40rem;
-    width: 40rem;
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    div {
-        border: 1px solid black;
-    }
+	border: 1px solid black;
+	height: 40rem;
+	width: 40rem;
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	div {
+		border: 1px solid black;
+		background-color: white;
+	}
 }
 
 .enemyBoard {
-    border: 1px solid black;
-    height: 40rem;
-    width: 40rem;
-    display: grid;
-    grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-    div {
-        border: 1px solid black;
-    }
+	border: 1px solid black;
+	height: 40rem;
+	width: 40rem;
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	grid-template-rows: repeat(10, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+	div {
+		border: 1px solid black;
+		background-color: white;
+	}
 }
