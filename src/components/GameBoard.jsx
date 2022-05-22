@@ -1,87 +1,74 @@
 import "../styles/GameBoard.scss";
+import { createBoard } from "../helpers/helpers";
 import { useState, useEffect } from "react";
 
-const GameBoard = ({ socket, username, opponentName }) => {
+const GameBoard = ({ socket, user, opponent }) => {
 	const [leftGame, setLeftGame] = useState(false);
-	const [guess, setGuess] = useState(0);
-	const [gameStatus, setGameStatus] = useState(true);
-	const yourDivBoxes = [];
+
+	const myDivBoxes = [];
 	const enemyDivBoxes = [];
-	const yourShips = ["y0", "y1", "y2", "y3"];
-	const enemyShips = ["e1", "e2", "e3", "e4"];
 
-	// if (gameStatus === true) {
-	// 	console.log('här försvinner div och spelet börjar')
-	// }
-
-	// if (gameStatus === false) {
-	// 	console.log("div som täcker tills motståndare är ansluten")
-	// }
-
-	const postBoxClick = (id, clicked) => {
-		if (clicked) {
-			document.querySelector(`.${id}`).style.backgroundColor = "green";
-			document.querySelector(`.${id}`).style.pointerEvents = "none";
-		}
-
-		if (!clicked) {
-			document.querySelector(`.${id}`).style.backgroundColor = "red";
-			document.querySelector(`.${id}`).style.pointerEvents = "none";
-		}
-	};
+	createBoard(myDivBoxes, "m");
+	createBoard(enemyDivBoxes, "e");
 
 	const clickOnGrid = (e) => {
-		setGuess(guess + 1);
-
-		if (enemyShips.includes(e.target.className)) {
-			postBoxClick(e.target.className, true);
-		}
-
-		if (!enemyShips.includes(e.target.className)) {
-			postBoxClick(e.target.className, false);
-		}
+		socket.emit("player:shot-fired", e.target.dataset.id);
+		console.log(e.target.dataset.id);
 	};
 
-	for (let i = 0; i < 100; i++) {
-		yourDivBoxes.push(<div className={`y${i}`} key={`${i}`}></div>);
-	}
+	const handleHit = (target) => {
+		document.querySelector(`.m${target}`).style.backgroundColor = "red";
+		document.querySelector(`.m${target}`).style.pointerEvents = "none";
 
-	for (let i = 0; i < 100; i++) {
-		enemyDivBoxes.push(
-			<div className={`e${i}`} onClick={clickOnGrid} key={`${i}`}></div>
-		);
-	}
+		socket.emit("player:shot-reply", target, socket.id);
+	};
 
-	// yourShips.forEach(e => {
-	// 	console.log(e)
-	// 	document.querySelector(`.${e}`).style.backgroundColor = 'blue'
-	// })
+	const handleMiss = (target) => {
+		document.querySelector(`.m${target}`).style.backgroundColor = "black";
+		document.querySelector(`.m${target}`).style.pointerEvents = "none";
+
+		socket.emit("player:shot-reply", target, socket.id);
+	};
+
+	const playerLeftGame = (boolean) => {
+		setLeftGame(boolean);
+	};
 
 	useEffect(() => {
-		socket.on("player:disconnected", function (boolean) {
-			setLeftGame(boolean);
-		});
-	}, [socket]);
+		socket.on("player:disconnected", playerLeftGame);
+
+		socket.on("player:hit", handleHit);
+
+		socket.on("player:miss", handleMiss);
+	}, [socket, user, opponent]);
 
 	return (
 		<div>
 			<div>
 				<h2>Let's play some Battleship!</h2>
 
-				<p>{username} here</p>
-				<p> {opponentName} somewhere</p>
+				{user && opponent ? (
+					<p>
+						<span>{user.username}</span> vs <span>{opponent.username}</span>
+					</p>
+				) : (
+					<p>Waiting for another player...</p>
+				)}
 
 				{/* Lets player know if opponent left game */}
-				{leftGame === true && <h1>{opponentName} left the game</h1>}
+				{leftGame === true && <h1>{opponent.username} left the game</h1>}
 			</div>
 			<main>
 				<section>
-					<p>Your guesses: {guess}</p>
-					<div className="yourBoard">{yourDivBoxes}</div>
+					<h3>Your board</h3>
+					<div className="yourBoard">{myDivBoxes}</div>
+					<p>{username}</p>
 				</section>
 				<section>
-					<p>Enemy :P click on this board</p>
-					<div className="enemyBoard">{enemyDivBoxes}</div>
+					<h3>Enemy board</h3>
+					<div className="enemyBoard" onClick={clickOnGrid}>
+						{enemyDivBoxes}
+					</div>
 				</section>
 			</main>
 		</div>
