@@ -53,6 +53,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const clickOnGrid = (e) => {
 		setGuess(guess + 1);
 
+		console.log(`${socket.id} clicked on ${e.target.dataset.id}`);
+
 		socket.emit("player:shot-fired", e.target.dataset.id);
 
 		// set ID for each type of ship and emit id for ship type
@@ -140,7 +142,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 				{user && opponent ? (
 					<p>
-						<span>{user.username}</span> vs <span>{opponent.username}</span>
+						<span style={{ color: "red" }}>{user.username}</span> vs{" "}
+						<span>{opponent.username}</span>
 					</p>
 				) : (
 					<p>Waiting for another player...</p>
