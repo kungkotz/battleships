@@ -12,7 +12,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	const [yourShips, setYourShips] = useState([]);
 
-	/* generera dina skepp */
+	/* Generates your ships */
 	const generateYourShips = (squares) => {
 		let ship = [];
 		let randomPosition = Math.floor(Math.random() * 100);
@@ -21,7 +21,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 		ship.push(startPosition);
 
 		for (let i = 0; i < squares - 1; i++) {
-			//   console.log("e" + randomPosition++);
 			ship.push("y" + ++randomPosition);
 		}
 
@@ -34,7 +33,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	console.log(yourShips);
 
-	/* generera divar till din grid */
+	/* Generates grid */
 	const generateYourDivs = () => {
 		// const yourDivBoxes = [];
 		for (let i = 0; i < 100; i++) {
@@ -55,7 +54,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		return setYourDivs((yourDivs) => [...yourDivs, ...yourDivBoxes]);
 	};
 
-	/* generera divar till motståndares grid */
+	/* Generates enemy div */
 
 	const generateEnemyDivs = () => {
 		// const enemyDivBoxes = [];
@@ -69,43 +68,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 		return setEnemyDivs((enemyDivs) => [...enemyDivs, ...enemyDivBoxes]);
 	};
 
-	/* funktion då spelare trycker på en ruta i grid */
-
-	// const clickOnGrid = (e) => {
-	// 	// setGuess(guess + 1);
-
-	// 	if (enemyShips.includes(e.target.className)) {
-	// 		postBoxClick(e.target.className, true);
-	// 		console.log(e.target.className);
-	// 		console.log("träff");
-	// 	}
-
-	// 	if (!enemyShips.includes(e.target.className)) {
-	// 		postBoxClick(e.target.className, false);
-	// 		console.log(e.target.className);
-	// 		console.log("miss");
-	// 	}
-	// };
-
-	/* funktion som tar emot ifall det blev träff eller miss */
-
-	// const postBoxClick = (id, clicked) => {
-	// 	if (clicked) {
-	// 		document.querySelector(`.${id}`).style.backgroundColor = "green";
-	// 		document.querySelector(`.${id}`).style.pointerEvents = "none";
-	// 	}
-
-	// 	if (!clicked) {
-	// 		document.querySelector(`.${id}`).style.backgroundColor = "red";
-	// 		document.querySelector(`.${id}`).style.pointerEvents = "none";
-	// 	}
-	// };
-
 	const clickOnGrid = (e) => {
 		socket.emit("player:shot-fired", e.target.className);
 		console.log(e.target.className);
 	};
 
+	// Handling if the shot was a hit or miss on the opponent board
 	const handleShotFired = (id) => {
 		const target = id.replace("e", "y");
 		const hit = yourShips.includes(target);
@@ -131,6 +99,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 	};
 
+	// Handling if the shot was a hit or miss on the your board
 	const handleShotReceived = (id, boolean) => {
 		console.log(`Your opponent shot at ${id} and it's ${boolean}`);
 		const target = id.replace("y", "e");
@@ -144,6 +113,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 	};
 
+	// Handling disconnecting player
 	const playerLeftGame = (boolean) => {
 		setLeftGame(boolean);
 	};
@@ -183,14 +153,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 			<main>
 				<section>
 					<h3>Your board</h3>
-					{/* <div className="yourBoard">{myDivBoxes}</div> */}
+
 					<div className="yourBoard">{yourDivs}</div>
 				</section>
 				<section>
 					<h3>Enemy board</h3>
-					{/* <div className="enemyBoard" onClick={clickOnGrid}>
-						{enemyDivBoxes}
-					</div> */}
+
 					<div className="enemyBoard" onClick={clickOnGrid}>
 						{enemyDivs}
 					</div>
