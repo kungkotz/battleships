@@ -12,6 +12,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	const [yourShips, setYourShips] = useState([]);
 
+	const [currentPlayer, setCurrentPlayer] = useState(true);
+
 	/* Generates your ships */
 	const generateYourShips = (squares) => {
 		let ship = [];
@@ -69,18 +71,27 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	const clickOnGrid = (e) => {
-		socket.emit("player:shot-fired", e.target.className);
-		console.log(e.target.className);
+		if (currentPlayer) {
+			console.log(`${user.username} is currently: ${currentPlayer}`);
+			socket.emit("player:shot-fired", e.target.className);
+			console.log(e.target.className);
+			setCurrentPlayer(false);
+		}
+		console.log(`${user.username} is AFTER set: ${currentPlayer}`);
+
+		if (!currentPlayer) {
+			console.log(`${user.username} is currently: ${currentPlayer}`);
+			socket.emit("player:shot-fired", e.target.className);
+			console.log(e.target.className);
+			setCurrentPlayer(true);
+		}
+		console.log(`${opponent.username} is AFTER set: ${currentPlayer}`);
 	};
 
 	// Handling if the shot was a hit or miss on the opponent board
 	const handleShotFired = (id) => {
 		const target = id.replace("e", "y");
 		const hit = yourShips.includes(target);
-
-		console.log("TARGET?", target);
-
-		console.log("HIT?", hit);
 
 		if (hit) {
 			console.log(`You shot at ${target} and it's a HIT!`);
