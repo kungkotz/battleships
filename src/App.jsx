@@ -21,7 +21,6 @@ function App() {
 		socket.emit("player:joined", userInput);
 		setUserInput("");
 	};
-	console.log("username", username);
 
 	useEffect(() => {
 		socket.on("players:profiles", function (players) {
