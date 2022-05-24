@@ -109,36 +109,51 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	const handleShotFired = (id) => {
 		const target = id.replace("e", "y");
-		console.log(target);
+		const hit = yourShips.includes(target);
 
-		if (yourShips.find((ship) => ship === target)) {
-			console.log("HIT! :D");
+		console.log("TARGET?", target);
+
+		console.log("HIT?", hit);
+
+		if (hit) {
+			console.log(`You shot at ${target} and it's a HIT!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 
-			socket.emit("player:shot-reply", true, target);
+			socket.emit("player:shot-reply", target, true);
 		} else {
-			console.log("MISS! :(");
+			console.log(`You shot at ${target} and it's a MISS!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "red";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 
-			socket.emit("player:shot-reply", false, target);
+			socket.emit("player:shot-reply", target, false);
 		}
 	};
 
-	// const handleShotReceived = (boolean, id) => {
-	// 	const target = id.replace("e", "y");
+	const handleShotReceived = (id, boolean) => {
+		console.log(`Your opponent shot at ${id} and it's ${boolean}`);
+		const target = id.replace("y", "e");
 
-	// 	if (boolean) {
-	// 		document.querySelector(`.${target}`).style.backgroundColor = "green";
-	// 		document.querySelector(`.${target}`).style.pointerEvents = "none";
-	// 	} else {
-	// 		document.querySelector(`.${target}`).style.backgroundColor = "red";
-	// 		document.querySelector(`.${target}`).style.pointerEvents = "none";
-	// 	}
-	// };
+		if (boolean === false) {
+			document.querySelector(`.${target}`).style.backgroundColor = "red";
+			document.querySelector(`.${target}`).style.pointerEvents = "none";
+		} else {
+			document.querySelector(`.${target}`).style.backgroundColor = "green";
+			document.querySelector(`.${target}`).style.pointerEvents = "none";
+		}
+
+		// const target = id.replace("e", "y");
+
+		// if (boolean) {
+		// 	document.querySelector(`.${target}`).style.backgroundColor = "green";
+		// 	document.querySelector(`.${target}`).style.pointerEvents = "none";
+		// } else {
+		// 	document.querySelector(`.${target}`).style.backgroundColor = "red";
+		// 	document.querySelector(`.${target}`).style.pointerEvents = "none";
+		// }
+	};
 
 	const playerLeftGame = (boolean) => {
 		setLeftGame(boolean);
@@ -157,11 +172,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 		socket.on("player:fire", handleShotFired);
 
-		// socket.on("player:shot-received", handleShotReceived);
-
-		// socket.on("player:hit", handleHit);
-
-		// socket.on("player:miss", handleMiss);
+		socket.on("player:shot-received", handleShotReceived);
 	}, [socket, user, opponent]);
 
 	return (
