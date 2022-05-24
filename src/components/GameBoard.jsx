@@ -72,13 +72,13 @@ const GameBoard = ({ socket, user, opponent, username }) => {
 			<main>
 				<section>
 					<div className="yourBoard">{myDivBoxes}</div>
-					<p>{username}</p>
+					<h1>Your Board</h1>
 				</section>
 				<section>
-					<p>Enemy :P click on this board</p>
 					<div className="enemyBoard" onClick={clickOnGrid}>
 						{enemyDivBoxes}
 					</div>
+					<h1>Enemy Board</h1>
 				</section>
 			</main>
 		</div>
