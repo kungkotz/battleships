@@ -1,5 +1,4 @@
 import "../styles/GameBoard.scss";
-import { createBoard } from "../helpers/helpers";
 import { useState, useEffect } from "react";
 
 const GameBoard = ({ socket, user, opponent }) => {
@@ -143,16 +142,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 		}
-
-		// const target = id.replace("e", "y");
-
-		// if (boolean) {
-		// 	document.querySelector(`.${target}`).style.backgroundColor = "green";
-		// 	document.querySelector(`.${target}`).style.pointerEvents = "none";
-		// } else {
-		// 	document.querySelector(`.${target}`).style.backgroundColor = "red";
-		// 	document.querySelector(`.${target}`).style.pointerEvents = "none";
-		// }
 	};
 
 	const playerLeftGame = (boolean) => {
