@@ -11,7 +11,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const [cruiser, setCruiser] = useState([]);
 	const [submarine, setSubmarine] = useState([]);
 
-	const [currentPlayer, setCurrentPlayer] = useState(true);
+	const [myTurn, setMyTurn] = useState(true);
 
 	/* Generates your ships */
 	const generateYourShips = (squares) => {
@@ -74,21 +74,13 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	const clickOnGrid = (e) => {
-		if (currentPlayer) {
-			console.log(`${user.username} is currently: ${currentPlayer}`);
-			socket.emit("player:shot-fired", e.target.className);
-			console.log(e.target.className);
-			// setCurrentPlayer(false);
-		}
-		console.log(`${user.username} is AFTER set: ${currentPlayer}`);
+		if (myTurn) {
+			// console.log(e.target.className);
 
-		// if (!currentPlayer) {
-		// 	console.log(`${user.username} is currently: ${currentPlayer}`);
-		// 	socket.emit("player:shot-fired", e.target.className);
-		// 	console.log(e.target.className);
-		// 	setCurrentPlayer(true);
-		// }
-		// console.log(`${opponent.username} is AFTER set: ${currentPlayer}`);
+			socket.emit("player:shot-fired", e.target.className);
+
+			setMyTurn(false);
+		}
 	};
 
 	// Handling if the shot was a hit or miss on the opponent board
@@ -113,6 +105,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 			socket.emit("player:shot-reply", target, false);
 		}
+
+		setMyTurn(true);
 	};
 
 	// Handling if the shot was a hit or miss on the your board
@@ -146,6 +140,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 	}, []);
 
 	useEffect(() => {
+		// if (!user.myTurn === true) {
+		// 	setMyTurn(true);
+		// }
+
+		console.log("myTurn?", myTurn);
+
 		socket.on("player:disconnected", playerLeftGame);
 
 		socket.on("player:fire", handleShotFired);
@@ -165,6 +165,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 				) : (
 					<p>Waiting for another player...</p>
 				)}
+
+				{myTurn ? <p>Your turn</p> : <p>Enemy turn</p>}
 
 				{/* Lets player know if opponent left game */}
 				{leftGame === true && <h1>{opponent.username} left the game</h1>}
