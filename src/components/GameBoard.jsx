@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 const GameBoard = ({ socket, user, opponent }) => {
 	const [leftGame, setLeftGame] = useState(false);
 
-	const yourDivBoxes = [];
-	const enemyDivBoxes = [];
-
 	const [yourDivs, setYourDivs] = useState([]);
 	const [enemyDivs, setEnemyDivs] = useState([]);
 
-	const [yourShips, setYourShips] = useState([]);
+	const [battleship, setBattleship] = useState([]);
+	const [cruiser, setCruiser] = useState([]);
+	const [submarine, setSubmarine] = useState([]);
 
 	const [currentPlayer, setCurrentPlayer] = useState(true);
 
@@ -26,32 +25,36 @@ const GameBoard = ({ socket, user, opponent }) => {
 			ship.push("y" + ++randomPosition);
 		}
 
-		if (yourShips[ship]) {
-			generateYourShips();
+		// if (yourShips[ship]) {
+		// 	generateYourShips();
+		// }
+
+		if (squares === 4) {
+			return setBattleship((yourShips) => [...yourShips, ...ship]);
 		}
 
-		return setYourShips((yourShips) => [...yourShips, ...ship]);
+		if (squares === 3) {
+			return setCruiser((yourShips) => [...yourShips, ...ship]);
+		}
+
+		if (squares === 2) {
+			return setSubmarine((yourShips) => [...yourShips, ...ship]);
+		}
 	};
 
-	console.log(yourShips);
+	console.log("Battleship", battleship);
+	console.log("Cruiser", cruiser);
+	console.log("Submarine", submarine);
 
 	/* Generates grid */
 	const generateYourDivs = () => {
-		// const yourDivBoxes = [];
+		const yourDivBoxes = [];
 		for (let i = 0; i < 100; i++) {
-			if (yourShips.includes("y" + i)) {
-				yourDivBoxes.push(
-					<div className={`y${i}`} key={`${i}`}>
-						{i + " ⛵️"}
-					</div>
-				);
-			} else {
-				yourDivBoxes.push(
-					<div className={`y${i}`} key={`${i}`}>
-						{i}
-					</div>
-				);
-			}
+			yourDivBoxes.push(
+				<div className={`y${i}`} key={`${i}`}>
+					{i}
+				</div>
+			);
 		}
 		return setYourDivs((yourDivs) => [...yourDivs, ...yourDivBoxes]);
 	};
@@ -59,7 +62,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	/* Generates enemy div */
 
 	const generateEnemyDivs = () => {
-		// const enemyDivBoxes = [];
+		const enemyDivBoxes = [];
 		for (let i = 0; i < 100; i++) {
 			enemyDivBoxes.push(
 				<div className={`e${i}`} key={`${i}`}>
@@ -75,25 +78,27 @@ const GameBoard = ({ socket, user, opponent }) => {
 			console.log(`${user.username} is currently: ${currentPlayer}`);
 			socket.emit("player:shot-fired", e.target.className);
 			console.log(e.target.className);
-			setCurrentPlayer(false);
+			// setCurrentPlayer(false);
 		}
 		console.log(`${user.username} is AFTER set: ${currentPlayer}`);
 
-		if (!currentPlayer) {
-			console.log(`${user.username} is currently: ${currentPlayer}`);
-			socket.emit("player:shot-fired", e.target.className);
-			console.log(e.target.className);
-			setCurrentPlayer(true);
-		}
-		console.log(`${opponent.username} is AFTER set: ${currentPlayer}`);
+		// if (!currentPlayer) {
+		// 	console.log(`${user.username} is currently: ${currentPlayer}`);
+		// 	socket.emit("player:shot-fired", e.target.className);
+		// 	console.log(e.target.className);
+		// 	setCurrentPlayer(true);
+		// }
+		// console.log(`${opponent.username} is AFTER set: ${currentPlayer}`);
 	};
 
 	// Handling if the shot was a hit or miss on the opponent board
 	const handleShotFired = (id) => {
 		const target = id.replace("e", "y");
-		const hit = yourShips.includes(target);
+		const hitBattleship = battleship.includes(target);
+		const hitCruiser = cruiser.includes(target);
+		const hitSubmarine = submarine.includes(target);
 
-		if (hit) {
+		if (hitBattleship || hitCruiser || hitSubmarine) {
 			console.log(`You shot at ${target} and it's a HIT!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
@@ -131,6 +136,9 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	useEffect(() => {
 		generateYourShips(4);
+		generateYourShips(3);
+		generateYourShips(2);
+		generateYourShips(2);
 
 		generateYourDivs();
 		generateEnemyDivs();
