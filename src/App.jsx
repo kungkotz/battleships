@@ -21,15 +21,12 @@ function App() {
 		socket.emit("player:joined", userInput);
 		setUserInput("");
 	};
-	console.log("username", username);
 
 	useEffect(() => {
 		socket.on("players:profiles", function (players) {
 			if (players.length === 2) {
 				const thisSocket = players.find((player) => player.id === socket.id);
-				thisSocket.currentPlayer = "user";
 				const otherSocket = players.find((player) => player.id !== socket.id);
-				otherSocket.currentPlayer = "enemy";
 
 				setUser(thisSocket);
 				setOpponent(otherSocket);
