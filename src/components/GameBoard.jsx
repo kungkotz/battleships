@@ -11,8 +11,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const [cruiser, setCruiser] = useState([]);
 	const [submarine, setSubmarine] = useState([]);
 
-	const [currentPlayer, setCurrentPlayer] = useState(true);
-
 	/* Generates your ships */
 	const generateYourShips = (squares) => {
 		let ship = [];
@@ -74,21 +72,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	const clickOnGrid = (e) => {
-		if (currentPlayer) {
-			console.log(`${user.username} is currently: ${currentPlayer}`);
-			socket.emit("player:shot-fired", e.target.className);
-			console.log(e.target.className);
-			// setCurrentPlayer(false);
-		}
-		console.log(`${user.username} is AFTER set: ${currentPlayer}`);
-
-		// if (!currentPlayer) {
-		// 	console.log(`${user.username} is currently: ${currentPlayer}`);
-		// 	socket.emit("player:shot-fired", e.target.className);
-		// 	console.log(e.target.className);
-		// 	setCurrentPlayer(true);
-		// }
-		// console.log(`${opponent.username} is AFTER set: ${currentPlayer}`);
+		socket.emit("player:shot-fired", e.target.className);
+		console.log(e.target.className);
 	};
 
 	// Handling if the shot was a hit or miss on the opponent board
