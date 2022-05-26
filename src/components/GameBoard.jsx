@@ -12,7 +12,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const [yourShips, setYourShips] = useState([]);
 
 	const tehShips = [];
-	const doubleSubmarine = false;
 
 	const [battleship, setBattleShip] = useState([]);
 	const [cruiser, setCruiser] = useState([]);
@@ -61,9 +60,9 @@ const GameBoard = ({ socket, user, opponent }) => {
 		// console.log("teHShIpS", tehShips);
 		// console.log("yourShips: ", yourShips);
 
-		let double = tehShips.some((item) => ship.includes(item));
+		// let double = tehShips.some((item) => ship.includes(item));
 
-		console.log(double);
+		// console.log(double);
 
 		if (tehShips.some((item) => ship.includes(item))) {
 			ship = [];
@@ -71,28 +70,28 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 
 		if (ship.length === 4 && extra === "single") {
-			console.log("battleship är pushad");
+			// console.log("battleship är pushad");
 			tehShips.push(...ship);
 			setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setBattleShip((battleship) => [...battleship, ...ship]);
 		}
 
 		if (ship.length === 3 && extra === "single") {
-			console.log("cruiser är pushad");
+			// console.log("cruiser är pushad");
 			tehShips.push(...ship);
 			setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setCruiser((cruiser) => [...cruiser, ...ship]);
 		}
 
 		if (ship.length === 2 && extra === "single") {
-			console.log("ubåt1 är pushad");
+			// console.log("ubåt1 är pushad");
 			tehShips.push(...ship);
 			setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setSubmarine1((submarine1) => [...submarine1, ...ship]);
 		}
 
 		if (ship.length === 2 && extra === "double") {
-			console.log("ubåt2 är pushad");
+			// console.log("ubåt2 är pushad");
 			tehShips.push(...ship);
 			setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setSubmarine2((submarine2) => [...submarine2, ...ship]);
@@ -118,7 +117,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	/* Generates enemy div */
-
 	const generateEnemyDivs = () => {
 		const enemyDivBoxes = [];
 		for (let i = 0; i < 100; i++) {
@@ -131,6 +129,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		return setEnemyDivs((enemyDivs) => [...enemyDivs, ...enemyDivBoxes]);
 	};
 
+	// handles click
 	const clickOnGrid = (e) => {
 		if (myTurn) {
 			// console.log(e.target.className);
@@ -166,10 +165,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 
 		setMyTurn(myTurn);
-
-		// if (user.myTurn === myTurn) {
-		// 	setMyTurn(true);
-		// }
 	};
 
 	// Handling if the shot was a hit or miss on the your board
@@ -203,14 +198,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 	}, []);
 
 	useEffect(() => {
-		// if (user.myTurn !== true) {
-		// 	setMyTurn(false);
-		// }
-
 		console.log("USER", user);
 		console.log("OPPONENT", opponent);
 
 		console.log("myTurn?", myTurn);
+
+		console.log("THIS MY SHIPS ARRAY", yourShips);
 
 		socket.on("player:disconnected", playerLeftGame);
 
