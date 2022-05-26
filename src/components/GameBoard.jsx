@@ -154,8 +154,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 	}, [socket, user, opponent]);
 
 	return (
-		<div>
-			<div>
+		<div className="container">
+			<header>
 				<h2>Let's play some Battleship!</h2>
 
 				{user && opponent ? (
@@ -169,8 +169,15 @@ const GameBoard = ({ socket, user, opponent }) => {
 				{myTurn ? <p>Your turn</p> : <p>Enemy turn</p>}
 
 				{/* Lets player know if opponent left game */}
-				{leftGame === true && <h1>{opponent.username} left the game</h1>}
-			</div>
+				{leftGame === true && (
+					<dialog open>
+						<h2>{opponent.username} left the game</h2>
+						<button onClick={() => window.location.reload()} className="btn">
+							Exit
+						</button>
+					</dialog>
+				)}
+			</header>
 			<main>
 				<section>
 					<h3>Your board</h3>
