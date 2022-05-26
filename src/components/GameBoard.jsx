@@ -9,17 +9,48 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const [yourDivs, setYourDivs] = useState([]);
 	const [enemyDivs, setEnemyDivs] = useState([]);
 
-	const [battleship, setBattleship] = useState([]);
+	const [yourShips, setYourShips] = useState([]);
+
+	const tehShips = [];
+	const doubleSubmarine = false;
+
+	const [battleship, setBattleShip] = useState([]);
 	const [cruiser, setCruiser] = useState([]);
-	const [submarine, setSubmarine] = useState([]);
+	const [submarine1, setSubmarine1] = useState([]);
+	const [submarine2, setSubmarine2] = useState([]);
 
 	const [myTurn, setMyTurn] = useState(true);
 
 	/* Generates your ships */
-	const generateYourShips = (squares) => {
+	const generateYourShips = (squares, extra) => {
 		let ship = [];
-		let randomPosition = Math.floor(Math.random() * 100);
+		let randomPosition;
+
+		if (squares === 4) {
+			let yPosition = Math.floor(Math.random() * 7) + 1;
+			let xPosition = Math.floor(Math.random() * 7);
+			randomPosition = "" + yPosition + xPosition;
+			// console.log("y: ", yPosition + " x: ", xPosition);
+		}
+
+		if (squares === 3) {
+			let yPosition = Math.floor(Math.random() * 8) + 1;
+			let xPosition = Math.floor(Math.random() * 8);
+			randomPosition = "" + yPosition + xPosition;
+			// console.log("y: ", yPosition + " x: ", xPosition);
+		}
+
+		if (squares === 2) {
+			let yPosition = Math.floor(Math.random() * 9) + 1;
+			let xPosition = Math.floor(Math.random() * 9);
+			randomPosition = "" + yPosition + xPosition;
+			// console.log("y: ", yPosition + " x: ", xPosition);
+		}
+
 		let startPosition = "y" + randomPosition;
+
+		// console.log("här startar vi: ", randomPosition);
+		// console.log("innan push ", startPosition);
 
 		ship.push(startPosition);
 
@@ -27,26 +58,51 @@ const GameBoard = ({ socket, user, opponent }) => {
 			ship.push("y" + ++randomPosition);
 		}
 
-		// if (yourShips[ship]) {
-		// 	generateYourShips();
-		// }
+		// console.log("teHShIpS", tehShips);
+		// console.log("yourShips: ", yourShips);
 
-		if (squares === 4) {
-			return setBattleship((yourShips) => [...yourShips, ...ship]);
+		let double = tehShips.some((item) => ship.includes(item));
+
+		console.log(double);
+
+		if (tehShips.some((item) => ship.includes(item))) {
+			ship = [];
+			generateYourShips(squares, extra);
 		}
 
-		if (squares === 3) {
-			return setCruiser((yourShips) => [...yourShips, ...ship]);
+		if (ship.length === 4 && extra === "single") {
+			console.log("battleship är pushad");
+			tehShips.push(...ship);
+			setYourShips((yourShips) => [...yourShips, ...ship]);
+			return setBattleShip((battleship) => [...battleship, ...ship]);
 		}
 
-		if (squares === 2) {
-			return setSubmarine((yourShips) => [...yourShips, ...ship]);
+		if (ship.length === 3 && extra === "single") {
+			console.log("cruiser är pushad");
+			tehShips.push(...ship);
+			setYourShips((yourShips) => [...yourShips, ...ship]);
+			return setCruiser((cruiser) => [...cruiser, ...ship]);
+		}
+
+		if (ship.length === 2 && extra === "single") {
+			console.log("ubåt1 är pushad");
+			tehShips.push(...ship);
+			setYourShips((yourShips) => [...yourShips, ...ship]);
+			return setSubmarine1((submarine1) => [...submarine1, ...ship]);
+		}
+
+		if (ship.length === 2 && extra === "double") {
+			console.log("ubåt2 är pushad");
+			tehShips.push(...ship);
+			setYourShips((yourShips) => [...yourShips, ...ship]);
+			return setSubmarine2((submarine2) => [...submarine2, ...ship]);
 		}
 	};
 
 	console.log("Battleship", battleship);
 	console.log("Cruiser", cruiser);
-	console.log("Submarine", submarine);
+	console.log("Submarine1", submarine1);
+	console.log("Submarine2", submarine2);
 
 	/* Generates grid */
 	const generateYourDivs = () => {
@@ -81,7 +137,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 			socket.emit("player:shot-fired", e.target.className);
 
-			setMyTurn(false);
+			setMyTurn(!myTurn);
 		}
 	};
 
@@ -90,9 +146,10 @@ const GameBoard = ({ socket, user, opponent }) => {
 		const target = id.replace("e", "y");
 		const hitBattleship = battleship.includes(target);
 		const hitCruiser = cruiser.includes(target);
-		const hitSubmarine = submarine.includes(target);
+		const hitSubmarine1 = submarine1.includes(target);
+		const hitSubmarine2 = submarine2.includes(target);
 
-		if (hitBattleship || hitCruiser || hitSubmarine) {
+		if (hitBattleship || hitCruiser || hitSubmarine1 || hitSubmarine2) {
 			console.log(`You shot at ${target} and it's a HIT!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
@@ -108,7 +165,11 @@ const GameBoard = ({ socket, user, opponent }) => {
 			socket.emit("player:shot-reply", target, false);
 		}
 
-		setMyTurn(true);
+		setMyTurn(myTurn);
+
+		// if (user.myTurn === myTurn) {
+		// 	setMyTurn(true);
+		// }
 	};
 
 	// Handling if the shot was a hit or miss on the your board
@@ -131,10 +192,10 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	useEffect(() => {
-		generateYourShips(4);
-		generateYourShips(3);
-		generateYourShips(2);
-		generateYourShips(2);
+		generateYourShips(4, "single");
+		generateYourShips(3, "single");
+		generateYourShips(2, "single");
+		generateYourShips(2, "double");
 
 		generateYourDivs();
 		generateEnemyDivs();
@@ -142,9 +203,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 	}, []);
 
 	useEffect(() => {
-		// if (!user.myTurn === true) {
-		// 	setMyTurn(true);
+		// if (user.myTurn !== true) {
+		// 	setMyTurn(false);
 		// }
+
+		console.log("USER", user);
+		console.log("OPPONENT", opponent);
 
 		console.log("myTurn?", myTurn);
 
@@ -185,18 +249,22 @@ const GameBoard = ({ socket, user, opponent }) => {
 			</header>
 			<main>
 				<section>
-					<div className="player-container">
-						<img src={pirateOne} alt="pirate" className="avatar" />
-						<h3>{user.username}</h3>
-					</div>
+					{user && opponent && (
+						<div className="player-container">
+							<img src={pirateOne} alt="pirate" className="avatar" />
+							<h3>{user.username}</h3>
+						</div>
+					)}
 
 					<div className="yourBoard">{yourDivs}</div>
 				</section>
 				<section>
-					<div className="player-container">
-						<img src={pirateTwo} alt="pirate" className="avatar" />
-						<h3>{opponent.username}</h3>
-					</div>
+					{user && opponent && (
+						<div className="player-container">
+							<img src={pirateTwo} alt="pirate" className="avatar" />
+							<h3>{opponent.username}</h3>
+						</div>
+					)}
 
 					<div className="enemyBoard" onClick={clickOnGrid}>
 						{enemyDivs}
