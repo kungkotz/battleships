@@ -118,7 +118,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	const showShips = () => {
-		const allShips = battleship.concat(cruiser, submarine);
+		const allShips = battleship.concat(cruiser, submarine1, submarine2);
 		console.log("All my ships are : ", allShips);
 
 		for (let i = 0; i < allShips.length; i++) {
@@ -279,6 +279,10 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		showShips();
+	});
 
 	useEffect(() => {
 		console.log("Total ships", yourShips);
