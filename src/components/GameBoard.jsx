@@ -155,23 +155,14 @@ const GameBoard = ({ socket, user, opponent }) => {
 		const hitSubmarine1 = submarine1.includes(target);
 		const hitSubmarine2 = submarine2.includes(target);
 
-		if (hitBattleship || hitCruiser || hitSubmarine1 || hitSubmarine2) {
+		if (hitBattleship) {
 			console.log(`You shot at ${target} and it's a HIT!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 			socket.emit("player:shot-reply", target, true);
-		} else {
-			console.log(`You shot at ${target} and it's a MISS!`);
 
-			document.querySelector(`.${target}`).style.backgroundColor = "red";
-			document.querySelector(`.${target}`).style.pointerEvents = "none";
-
-			socket.emit("player:shot-reply", target, false);
-		}
-
-		if (hitBattleship) {
 			removePart(battleship, target);
 
 			if (battleship.length === 0) {
@@ -183,6 +174,13 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 
 		if (hitCruiser) {
+			console.log(`You shot at ${target} and it's a HIT!`);
+
+			document.querySelector(`.${target}`).style.backgroundColor = "green";
+			document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+			socket.emit("player:shot-reply", target, true);
+
 			removePart(cruiser, target);
 
 			if (cruiser.length === 0) {
@@ -194,6 +192,13 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 
 		if (hitSubmarine1) {
+			console.log(`You shot at ${target} and it's a HIT!`);
+
+			document.querySelector(`.${target}`).style.backgroundColor = "green";
+			document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+			socket.emit("player:shot-reply", target, true);
+
 			removePart(submarine1, target);
 
 			if (submarine1.length === 0) {
@@ -205,6 +210,13 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 
 		if (hitSubmarine2) {
+			console.log(`You shot at ${target} and it's a HIT!`);
+
+			document.querySelector(`.${target}`).style.backgroundColor = "green";
+			document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+			socket.emit("player:shot-reply", target, true);
+
 			removePart(submarine2, target);
 
 			if (submarine2.length === 0) {
@@ -214,6 +226,15 @@ const GameBoard = ({ socket, user, opponent }) => {
 				socket.emit("player:ship-sunken", 1);
 			}
 		}
+
+		// else {
+		// 	console.log(`You shot at ${target} and it's a MISS!`);
+
+		// 	document.querySelector(`.${target}`).style.backgroundColor = "red";
+		// 	document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+		// 	socket.emit("player:shot-reply", target, false);
+		// }
 
 		// setMyTurn(myTurn);
 	};
