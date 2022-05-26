@@ -17,6 +17,16 @@
 			border-radius: 0.5rem;
 			border: none;
 			box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			align-items: center;
+			gap: 2rem;
+		}
+
+		h2 {
+			flex-basis: 100%;
 		}
 	}
 
@@ -24,6 +34,24 @@
 		display: flex;
 		justify-content: space-around;
 		align-items: center;
+
+		.player-container {
+			display: flex;
+			justify-content: left;
+			align-items: center;
+			gap: 1rem;
+
+			padding: 1rem 0rem;
+
+			.avatar {
+				width: clamp(1rem, 4vw, 5rem);
+			}
+
+			h3 {
+				font-size: clamp(0.75rem, 5vw, 2rem);
+				flex-grow: 1;
+			}
+		}
 	}
 }
 

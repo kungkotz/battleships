@@ -4,7 +4,7 @@ const LandingPage = ({ onHandleUsernameSubmit, userInput, setUserInput }) => {
 	return (
 		<div className="landing-page">
 			<div className="container">
-				<h1>BATTLESHIPS</h1>
+				<h1>BATTLESHIP</h1>
 
 				<img src={ShipImg} alt="Battleship" className="shipImage" />
 			</div>

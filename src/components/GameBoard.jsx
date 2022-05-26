@@ -1,5 +1,7 @@
 import "../styles/GameBoard.scss";
 import { useState, useEffect } from "react";
+import pirateOne from "../assets/p1.png";
+import pirateTwo from "../assets/p2.png";
 
 const GameBoard = ({ socket, user, opponent }) => {
 	const [leftGame, setLeftGame] = useState(false);
@@ -172,7 +174,10 @@ const GameBoard = ({ socket, user, opponent }) => {
 				{leftGame === true && (
 					<dialog open>
 						<h2>{opponent.username} left the game</h2>
-						<button onClick={() => window.location.reload()} className="btn">
+						<button
+							onClick={() => window.location.reload()}
+							className="btn btn-exit"
+						>
 							Exit
 						</button>
 					</dialog>
@@ -180,12 +185,18 @@ const GameBoard = ({ socket, user, opponent }) => {
 			</header>
 			<main>
 				<section>
-					<h3>Your board</h3>
+					<div className="player-container">
+						<img src={pirateOne} alt="pirate" className="avatar" />
+						<h3>{user.username}</h3>
+					</div>
 
 					<div className="yourBoard">{yourDivs}</div>
 				</section>
 				<section>
-					<h3>Enemy board</h3>
+					<div className="player-container">
+						<img src={pirateTwo} alt="pirate" className="avatar" />
+						<h3>{opponent.username}</h3>
+					</div>
 
 					<div className="enemyBoard" onClick={clickOnGrid}>
 						{enemyDivs}
