@@ -57,6 +57,16 @@ const GameBoard = ({ socket, user, opponent }) => {
 		return setYourDivs((yourDivs) => [...yourDivs, ...yourDivBoxes]);
 	};
 
+	const showShips = () => {
+		const allShips = battleship.concat(cruiser, submarine);
+		console.log("All my ships are : ", allShips);
+
+		for (let i = 0; i < allShips.length; i++) {
+			let myBoatCoord = allShips[i];
+			document.querySelector(`.${myBoatCoord}`).style.backgroundColor = "black";
+		}
+	};
+
 	/* Generates enemy div */
 
 	const generateEnemyDivs = () => {
@@ -124,11 +134,15 @@ const GameBoard = ({ socket, user, opponent }) => {
 		generateYourShips(3);
 		generateYourShips(2);
 		generateYourShips(2);
-
 		generateYourDivs();
 		generateEnemyDivs();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		showShips();
+	}, [generateYourShips, showShips]);
 
 	useEffect(() => {
 		socket.on("player:disconnected", playerLeftGame);
