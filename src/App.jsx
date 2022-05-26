@@ -59,10 +59,10 @@ function App() {
 
 			{/* If there is an ongoing game this will show */}
 			{fullGame && username === 0 && (
-				<div className="alert">
+				<dialog open className="alert">
 					<h2>Avast ye! Ongoing battle...</h2>
 					<p className="muted">try again later</p>
-				</div>
+				</dialog>
 			)}
 		</div>
 	);
