@@ -9,11 +9,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const [yourDivs, setYourDivs] = useState([]);
 	const [enemyDivs, setEnemyDivs] = useState([]);
 
-	const [yourShips, setYourShips] = useState([]);
+	const [yourShips, setYourShips] = useState(4);
+	const [enemyShips, setEnemyShips] = useState(4);
 
 	const tehShips = [];
 
-	const [battleship, setBattleShip] = useState([]);
+	const [battleship, setBattleship] = useState([]);
 	const [cruiser, setCruiser] = useState([]);
 	const [submarine1, setSubmarine1] = useState([]);
 	const [submarine2, setSubmarine2] = useState([]);
@@ -72,28 +73,28 @@ const GameBoard = ({ socket, user, opponent }) => {
 		if (ship.length === 4 && extra === "single") {
 			// console.log("battleship är pushad");
 			tehShips.push(...ship);
-			setYourShips((yourShips) => [...yourShips, ...ship]);
-			return setBattleShip((battleship) => [...battleship, ...ship]);
+			// setYourShips((yourShips) => [...yourShips, ...ship]);
+			return setBattleship((battleship) => [...battleship, ...ship]);
 		}
 
 		if (ship.length === 3 && extra === "single") {
 			// console.log("cruiser är pushad");
 			tehShips.push(...ship);
-			setYourShips((yourShips) => [...yourShips, ...ship]);
+			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setCruiser((cruiser) => [...cruiser, ...ship]);
 		}
 
 		if (ship.length === 2 && extra === "single") {
 			// console.log("ubåt1 är pushad");
 			tehShips.push(...ship);
-			setYourShips((yourShips) => [...yourShips, ...ship]);
+			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setSubmarine1((submarine1) => [...submarine1, ...ship]);
 		}
 
 		if (ship.length === 2 && extra === "double") {
 			// console.log("ubåt2 är pushad");
 			tehShips.push(...ship);
-			setYourShips((yourShips) => [...yourShips, ...ship]);
+			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setSubmarine2((submarine2) => [...submarine2, ...ship]);
 		}
 	};
@@ -140,6 +141,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 	};
 
+	const removePart = (array, hit) => {
+		let index = array.indexOf(hit);
+		array.splice(index, 1);
+		return;
+	};
+
 	// Handling if the shot was a hit or miss on the opponent board
 	const handleShotFired = (id) => {
 		const target = id.replace("e", "y");
@@ -155,6 +162,17 @@ const GameBoard = ({ socket, user, opponent }) => {
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 			socket.emit("player:shot-reply", target, true);
+
+			if (hitBattleship) {
+				removePart(battleship, target);
+
+				if (battleship.length === 0) {
+					console.log("Battleship dead");
+					setYourShips((prevState) => prevState - 1);
+					console.log("How many ships left?", yourShips);
+					socket.emit("player:ship-sunken", 1);
+				}
+			}
 		} else {
 			console.log(`You shot at ${target} and it's a MISS!`);
 
@@ -168,7 +186,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	// Handling if the shot was a hit or miss on the your board
-	const handleShotReceived = (id, boolean) => {
+	const handleShotReceived = (id, boolean, ship) => {
 		console.log(`Your opponent shot at ${id} and it's ${boolean}`);
 		const target = id.replace("y", "e");
 
@@ -198,19 +216,24 @@ const GameBoard = ({ socket, user, opponent }) => {
 	}, []);
 
 	useEffect(() => {
+		console.log("Total ships", yourShips);
 		console.log("USER", user);
 		console.log("OPPONENT", opponent);
 
 		console.log("myTurn?", myTurn);
 
-		console.log("THIS MY SHIPS ARRAY", yourShips);
+		// console.log("THIS MY SHIPS ARRAY", yourShips);
 
 		socket.on("player:disconnected", playerLeftGame);
 
 		socket.on("player:fire", handleShotFired);
 
 		socket.on("player:shot-received", handleShotReceived);
-	}, [socket, user, opponent]);
+
+		socket.on("player:ship-sunken-reply", (id) => {
+			setEnemyShips((prevState) => prevState - id);
+		});
+	}, [socket, user, opponent, yourShips, enemyShips]);
 
 	return (
 		<div className="container">
@@ -246,6 +269,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 						<div className="player-container">
 							<img src={pirateOne} alt="pirate" className="avatar" />
 							<h3>{user.username}</h3>
+							<p>Ships left: {yourShips}</p>
 						</div>
 					)}
 
@@ -256,6 +280,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 						<div className="player-container">
 							<img src={pirateTwo} alt="pirate" className="avatar" />
 							<h3>{opponent.username}</h3>
+							<p>Ships left: {enemyShips}</p>
 						</div>
 					)}
 
