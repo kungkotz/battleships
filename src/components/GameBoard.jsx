@@ -137,7 +137,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 			socket.emit("player:shot-fired", e.target.className);
 
-			setMyTurn(!myTurn);
+			// setMyTurn(!myTurn);
 		}
 	};
 
@@ -162,17 +162,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 			socket.emit("player:shot-reply", target, true);
-
-			if (hitBattleship) {
-				removePart(battleship, target);
-
-				if (battleship.length === 0) {
-					console.log("Battleship dead");
-					setYourShips((prevState) => prevState - 1);
-					console.log("How many ships left?", yourShips);
-					socket.emit("player:ship-sunken", 1);
-				}
-			}
 		} else {
 			console.log(`You shot at ${target} and it's a MISS!`);
 
@@ -182,7 +171,51 @@ const GameBoard = ({ socket, user, opponent }) => {
 			socket.emit("player:shot-reply", target, false);
 		}
 
-		setMyTurn(myTurn);
+		if (hitBattleship) {
+			removePart(battleship, target);
+
+			if (battleship.length === 0) {
+				console.log("Battleship dead");
+				setYourShips((prevState) => prevState - 1);
+				console.log("How many ships left?", yourShips);
+				socket.emit("player:ship-sunken", 1);
+			}
+		}
+
+		if (hitCruiser) {
+			removePart(cruiser, target);
+
+			if (cruiser.length === 0) {
+				console.log("Battleship dead");
+				setYourShips((prevState) => prevState - 1);
+				console.log("How many ships left?", yourShips);
+				socket.emit("player:ship-sunken", 1);
+			}
+		}
+
+		if (hitSubmarine1) {
+			removePart(submarine1, target);
+
+			if (submarine1.length === 0) {
+				console.log("Battleship dead");
+				setYourShips((prevState) => prevState - 1);
+				console.log("How many ships left?", yourShips);
+				socket.emit("player:ship-sunken", 1);
+			}
+		}
+
+		if (hitSubmarine2) {
+			removePart(submarine2, target);
+
+			if (submarine2.length === 0) {
+				console.log("Battleship dead");
+				setYourShips((prevState) => prevState - 1);
+				console.log("How many ships left?", yourShips);
+				socket.emit("player:ship-sunken", 1);
+			}
+		}
+
+		// setMyTurn(myTurn);
 	};
 
 	// Handling if the shot was a hit or miss on the your board
@@ -220,7 +253,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		console.log("USER", user);
 		console.log("OPPONENT", opponent);
 
-		console.log("myTurn?", myTurn);
+		// console.log("myTurn?", myTurn);
 
 		// console.log("THIS MY SHIPS ARRAY", yourShips);
 
@@ -289,6 +322,18 @@ const GameBoard = ({ socket, user, opponent }) => {
 					</div>
 				</section>
 			</main>
+
+			{yourShips === 0 && (
+				<dialog>
+					<h2>Game Over</h2>
+					<button
+						onClick={() => window.location.reload()}
+						className="btn btn-exit"
+					>
+						Exit
+					</button>
+				</dialog>
+			)}
 		</div>
 	);
 };
