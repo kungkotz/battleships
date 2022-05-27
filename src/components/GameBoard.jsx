@@ -117,16 +117,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 		return setYourDivs((yourDivs) => [...yourDivs, ...yourDivBoxes]);
 	};
 
-	const showShips = () => {
-		const allShips = battleship.concat(cruiser, submarine1, submarine2);
-		console.log("All my ships are : ", allShips);
-
-		for (let i = 0; i < allShips.length; i++) {
-			let myBoatCoord = allShips[i];
-			document.querySelector(`.${myBoatCoord}`).style.backgroundColor = "black";
-		}
-	};
-
 	/* Generates enemy div */
 	const generateEnemyDivs = () => {
 		const enemyDivBoxes = [];
@@ -281,15 +271,24 @@ const GameBoard = ({ socket, user, opponent }) => {
 	}, []);
 
 	useEffect(() => {
+		const showShips = () => {
+			const allShips = battleship.concat(cruiser, submarine1, submarine2);
+			console.log("All my ships are : ", allShips);
+
+			for (let i = 0; i < allShips.length; i++) {
+				let myBoatCoord = allShips[i];
+				document.querySelector(`.${myBoatCoord}`).style.backgroundColor =
+					"black";
+			}
+		};
+
 		showShips();
-	}, []);
+	}, [battleship, cruiser, submarine1, submarine2]);
 
 	useEffect(() => {
 		console.log("Total ships", yourShips);
 		console.log("USER", user);
 		console.log("OPPONENT", opponent);
-
-		console.log("USER TURN", user.turn);
 
 		// console.log("myTurn?", myTurn);
 
