@@ -284,24 +284,20 @@ const GameBoard = ({ socket, user, opponent }) => {
 	return (
 		<div className="container">
 			<header>
-				<h2>Let's play some Battleship!</h2>
+				<h1>BATTLESHIP</h1>
 
-				{user && opponent ? (
-					<p>
-						<span>{user.username}</span> vs <span>{opponent.username}</span>
-					</p>
-				) : (
-					<dialog open className="nes-dialog is-rounded">
-						<p>Waiting for another player...</p>
+				{!user && !opponent && (
+					<dialog open className="nes-dialog is-rounded waiting">
+						<p>Weigh Anchor and Hoist the Mizzen!</p>
 					</dialog>
 				)}
 
-				{myTurn ? <p>Your turn</p> : <p>Enemy turn</p>}
+				{myTurn ? <p>Blow The Man Down!</p> : <p>Wait Ye Seadog!</p>}
 
 				{/* Lets player know if opponent left game */}
 				{leftGame === true && (
 					<dialog open className="nes-dialog is-rounded">
-						<h2>{opponent.username} left the game</h2>
+						<h2>{opponent.username} Brought a Spring Upon ‘er!</h2>
 						<button
 							onClick={() => window.location.reload()}
 							className="btn nes-btn is-error"
@@ -340,7 +336,22 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 			{yourShips === 0 && (
 				<dialog open className="nes-dialog is-rounded game-over-dialog">
-					<h2>Game Over</h2>
+					<h2>All Hands Hoy!</h2>
+					<p>Time to walk the plank...</p>
+					<button
+						onClick={() => window.location.reload()}
+						className="btn nes-btn is-error"
+					>
+						Exit
+					</button>
+				</dialog>
+			)}
+
+			{enemyShips === 0 && (
+				<dialog open className="nes-dialog is-rounded game-over-dialog">
+					<h2>Shiver Me Timbers!</h2>
+					<p>We have booty to claim.</p>
+					<p></p>
 					<button
 						onClick={() => window.location.reload()}
 						className="btn nes-btn is-error"
