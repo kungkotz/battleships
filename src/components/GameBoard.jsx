@@ -19,7 +19,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const [submarine1, setSubmarine1] = useState([]);
 	const [submarine2, setSubmarine2] = useState([]);
 
-	const [myTurn, setMyTurn] = useState(true);
+	const [myTurn, setMyTurn] = useState();
 
 	/* Generates your ships */
 	const generateYourShips = (squares, extra) => {
@@ -30,27 +30,21 @@ const GameBoard = ({ socket, user, opponent }) => {
 			let yPosition = Math.floor(Math.random() * 7) + 1;
 			let xPosition = Math.floor(Math.random() * 7);
 			randomPosition = "" + yPosition + xPosition;
-			// console.log("y: ", yPosition + " x: ", xPosition);
 		}
 
 		if (squares === 3) {
 			let yPosition = Math.floor(Math.random() * 8) + 1;
 			let xPosition = Math.floor(Math.random() * 8);
 			randomPosition = "" + yPosition + xPosition;
-			// console.log("y: ", yPosition + " x: ", xPosition);
 		}
 
 		if (squares === 2) {
 			let yPosition = Math.floor(Math.random() * 9) + 1;
 			let xPosition = Math.floor(Math.random() * 9);
 			randomPosition = "" + yPosition + xPosition;
-			// console.log("y: ", yPosition + " x: ", xPosition);
 		}
 
 		let startPosition = "y" + randomPosition;
-
-		// console.log("här startar vi: ", randomPosition);
-		// console.log("innan push ", startPosition);
 
 		ship.push(startPosition);
 
@@ -58,20 +52,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 			ship.push("y" + ++randomPosition);
 		}
 
-		// console.log("teHShIpS", tehShips);
-		// console.log("yourShips: ", yourShips);
-
-		// let double = tehShips.some((item) => ship.includes(item));
-
-		// console.log(double);
-
 		if (tehShips.some((item) => ship.includes(item))) {
 			ship = [];
 			generateYourShips(squares, extra);
 		}
 
 		if (ship.length === 4 && extra === "single") {
-			// console.log("battleship är pushad");
 			tehShips.push(...ship);
 			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setBattleship((battleship) => [...battleship, ...ship]);
@@ -98,11 +84,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 			return setSubmarine2((submarine2) => [...submarine2, ...ship]);
 		}
 	};
-
-	console.log("Battleship", battleship);
-	console.log("Cruiser", cruiser);
-	console.log("Submarine1", submarine1);
-	console.log("Submarine2", submarine2);
 
 	/* Generates grid */
 	const generateYourDivs = () => {
@@ -133,11 +114,9 @@ const GameBoard = ({ socket, user, opponent }) => {
 	// handles click
 	const clickOnGrid = (e) => {
 		if (myTurn) {
-			// console.log(e.target.className);
-
 			socket.emit("player:shot-fired", e.target.className);
 
-			// setMyTurn(!myTurn);
+			setMyTurn(false);
 		}
 	};
 
@@ -166,14 +145,11 @@ const GameBoard = ({ socket, user, opponent }) => {
 			removePart(battleship, target);
 
 			if (battleship.length === 0) {
-				console.log("Battleship dead");
 				setYourShips((prevState) => prevState - 1);
-				console.log("How many ships left?", yourShips);
+
 				socket.emit("player:ship-sunken", 1);
 			}
-		}
-
-		if (hitCruiser) {
+		} else if (hitCruiser) {
 			console.log(`You shot at ${target} and it's a HIT!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
@@ -184,14 +160,11 @@ const GameBoard = ({ socket, user, opponent }) => {
 			removePart(cruiser, target);
 
 			if (cruiser.length === 0) {
-				console.log("Battleship dead");
 				setYourShips((prevState) => prevState - 1);
-				console.log("How many ships left?", yourShips);
+
 				socket.emit("player:ship-sunken", 1);
 			}
-		}
-
-		if (hitSubmarine1) {
+		} else if (hitSubmarine1) {
 			console.log(`You shot at ${target} and it's a HIT!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
@@ -202,14 +175,11 @@ const GameBoard = ({ socket, user, opponent }) => {
 			removePart(submarine1, target);
 
 			if (submarine1.length === 0) {
-				console.log("Battleship dead");
 				setYourShips((prevState) => prevState - 1);
-				console.log("How many ships left?", yourShips);
+
 				socket.emit("player:ship-sunken", 1);
 			}
-		}
-
-		if (hitSubmarine2) {
+		} else if (hitSubmarine2) {
 			console.log(`You shot at ${target} and it's a HIT!`);
 
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
@@ -220,28 +190,24 @@ const GameBoard = ({ socket, user, opponent }) => {
 			removePart(submarine2, target);
 
 			if (submarine2.length === 0) {
-				console.log("Battleship dead");
 				setYourShips((prevState) => prevState - 1);
-				console.log("How many ships left?", yourShips);
+
 				socket.emit("player:ship-sunken", 1);
 			}
+		} else {
+			console.log(`You shot at ${target} and it's a MISS!`);
+
+			document.querySelector(`.${target}`).style.backgroundColor = "red";
+			document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+			socket.emit("player:shot-reply", target, false);
 		}
 
-		// else {
-		// 	console.log(`You shot at ${target} and it's a MISS!`);
-
-		// 	document.querySelector(`.${target}`).style.backgroundColor = "red";
-		// 	document.querySelector(`.${target}`).style.pointerEvents = "none";
-
-		// 	socket.emit("player:shot-reply", target, false);
-		// }
-
-		// setMyTurn(myTurn);
+		setMyTurn(true);
 	};
 
 	// Handling if the shot was a hit or miss on the your board
 	const handleShotReceived = (id, boolean, ship) => {
-		console.log(`Your opponent shot at ${id} and it's ${boolean}`);
 		const target = id.replace("y", "e");
 
 		if (boolean === false) {
@@ -251,6 +217,10 @@ const GameBoard = ({ socket, user, opponent }) => {
 			document.querySelector(`.${target}`).style.backgroundColor = "green";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 		}
+	};
+
+	const handleSunkenShip = (id) => {
+		setEnemyShips((prevState) => prevState - id);
 	};
 
 	// Handling disconnecting player
@@ -273,7 +243,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 	useEffect(() => {
 		const showShips = () => {
 			const allShips = battleship.concat(cruiser, submarine1, submarine2);
-			console.log("All my ships are : ", allShips);
 
 			for (let i = 0; i < allShips.length; i++) {
 				let myBoatCoord = allShips[i];
@@ -286,25 +255,28 @@ const GameBoard = ({ socket, user, opponent }) => {
 	}, [battleship, cruiser, submarine1, submarine2]);
 
 	useEffect(() => {
-		console.log("Total ships", yourShips);
-		console.log("USER", user);
-		console.log("OPPONENT", opponent);
-
-		// console.log("myTurn?", myTurn);
-
-		// console.log("THIS MY SHIPS ARRAY", yourShips);
-
 		socket.on("player:disconnected", playerLeftGame);
 
 		socket.on("player:fire", handleShotFired);
 
 		socket.on("player:shot-received", handleShotReceived);
 
-		socket.on("player:ship-sunken-reply", (id) => {
-			setEnemyShips((prevState) => prevState - id);
-		});
+		socket.on("player:ship-sunken-reply", handleSunkenShip);
+
+		return () => {
+			socket.off("player:disconnected", playerLeftGame);
+
+			socket.off("player:fire", handleShotFired);
+
+			socket.off("player:shot-received", handleShotReceived);
+
+			socket.off("player:ship-sunken-reply", handleSunkenShip);
+		};
 	}, [socket, user, opponent, yourShips, enemyShips]);
 
+	useEffect(() => {
+		setMyTurn(user.turn);
+	}, [user]);
 	return (
 		<div className="container">
 			<header>
