@@ -91,7 +91,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		for (let i = 0; i < 100; i++) {
 			yourDivBoxes.push(
 				<div className={`y${i}`} key={`${i}`}>
-					{i}
+					{/* {i} */}
 				</div>
 			);
 		}
@@ -104,7 +104,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		for (let i = 0; i < 100; i++) {
 			enemyDivBoxes.push(
 				<div className={`e${i}`} key={`${i}`}>
-					{i}
+					{/* {i} */}
 				</div>
 			);
 		}
@@ -138,7 +138,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 			if (hitBattleship) {
 				console.log(`You shot at ${target} and it's a HIT!`);
 
-				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				// document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 				socket.emit("player:shot-reply", target, true);
@@ -153,7 +154,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 			} else if (hitCruiser) {
 				console.log(`You shot at ${target} and it's a HIT!`);
 
-				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				// document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 				socket.emit("player:shot-reply", target, true);
@@ -168,7 +170,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 			} else if (hitSubmarine1) {
 				console.log(`You shot at ${target} and it's a HIT!`);
 
-				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				// document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 				socket.emit("player:shot-reply", target, true);
@@ -183,7 +186,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 			} else if (hitSubmarine2) {
 				console.log(`You shot at ${target} and it's a HIT!`);
 
-				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				// document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 				socket.emit("player:shot-reply", target, true);
@@ -198,7 +202,8 @@ const GameBoard = ({ socket, user, opponent }) => {
 			} else {
 				console.log(`You shot at ${target} and it's a MISS!`);
 
-				document.querySelector(`.${target}`).style.backgroundColor = "red";
+				// document.querySelector(`.${target}`).style.backgroundColor = "red";
+				document.querySelector(`.${target}`).innerHTML = "❌";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
 				socket.emit("player:shot-reply", target, false);
@@ -214,10 +219,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 		const target = id.replace("y", "e");
 
 		if (boolean === false) {
-			document.querySelector(`.${target}`).style.backgroundColor = "red";
+			// document.querySelector(`.${target}`).style.backgroundColor = "red";
+			document.querySelector(`.${target}`).innerHTML = "❌";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 		} else {
-			document.querySelector(`.${target}`).style.backgroundColor = "green";
+			// document.querySelector(`.${target}`).style.backgroundColor = "green";
+			document.querySelector(`.${target}`).innerHTML = "💥";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 		}
 	};
@@ -251,7 +258,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 			for (let i = 0; i < allShips.length; i++) {
 				let myBoatCoord = allShips[i];
 				document.querySelector(`.${myBoatCoord}`).style.backgroundColor =
-					"black";
+					"#3f3f3f";
 			}
 		};
 
@@ -289,15 +296,27 @@ const GameBoard = ({ socket, user, opponent }) => {
 				{!user && !opponent && (
 					<dialog open className="nes-dialog is-rounded waiting">
 						<p>Weigh Anchor and Hoist the Mizzen!</p>
+						<p>Waiting for another player...</p>
 					</dialog>
 				)}
 
-				{myTurn ? <p>Blow The Man Down!</p> : <p>Wait Ye Seadog!</p>}
+				{myTurn ? (
+					<div>
+						<p>Blow The Man Down!</p>
+						<p>Your turn</p>
+					</div>
+				) : (
+					<div>
+						<p>Wait Ye Seadog!</p>
+						<p>Enemy turn</p>
+					</div>
+				)}
 
 				{/* Lets player know if opponent left game */}
 				{leftGame === true && (
 					<dialog open className="nes-dialog is-rounded">
 						<h2>{opponent.username} Brought a Spring Upon ‘er!</h2>
+						<p>{opponent.username} left the game.</p>
 						<button
 							onClick={() => window.location.reload()}
 							className="btn nes-btn is-error"
