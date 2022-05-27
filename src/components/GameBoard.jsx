@@ -340,7 +340,19 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 			{yourShips === 0 && (
 				<dialog open className="nes-dialog is-rounded game-over-dialog">
-					<h2>Game Over</h2>
+					<h2>You Lost!</h2>
+					<button
+						onClick={() => window.location.reload()}
+						className="btn nes-btn is-error"
+					>
+						Exit
+					</button>
+				</dialog>
+			)}
+
+			{enemyShips === 0 && (
+				<dialog open className="nes-dialog is-rounded game-over-dialog">
+					<h2>You Won!</h2>
 					<button
 						onClick={() => window.location.reload()}
 						className="btn nes-btn is-error"
