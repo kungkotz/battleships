@@ -282,12 +282,14 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	useEffect(() => {
 		showShips();
-	}, [showShips]);
+	}, []);
 
 	useEffect(() => {
 		console.log("Total ships", yourShips);
 		console.log("USER", user);
 		console.log("OPPONENT", opponent);
+
+		console.log("USER TURN", user.turn);
 
 		// console.log("myTurn?", myTurn);
 
