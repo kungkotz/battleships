@@ -1,10 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Big+Shoulders+Text:wght@900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 *,
 ::before,
 ::after {
 	margin: 0;
 	box-sizing: border-box;
+	font-family: "Press Start 2P", cursive;
 }
 
 .App {
@@ -14,17 +15,6 @@
 	background-image: url(./assets/bg.png);
 	background-size: cover;
 	position: relative;
-}
-
-.btn {
-	background-color: #005eb8;
-	border: 1px solid transparent;
-	border-radius: 0.25rem;
-	color: #fff;
-	cursor: pointer;
-	font-size: 1rem;
-	font-weight: 600;
-	padding: 0.5rem;
 }
 
 .landing-page {
@@ -40,8 +30,11 @@
 	}
 
 	h1 {
-		font-family: "Big Shoulders Text", cursive;
-		font-size: clamp(2rem, 12vw, 10rem);
+		font-size: clamp(2rem, 8vw, 8rem);
+
+		background: -webkit-linear-gradient(rgb(0, 60, 255), #108de0);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
 	}
 
 	.shipImage {

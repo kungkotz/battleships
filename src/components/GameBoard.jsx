@@ -291,18 +291,20 @@ const GameBoard = ({ socket, user, opponent }) => {
 						<span>{user.username}</span> vs <span>{opponent.username}</span>
 					</p>
 				) : (
-					<p>Waiting for another player...</p>
+					<dialog open className="nes-dialog is-rounded">
+						<p>Waiting for another player...</p>
+					</dialog>
 				)}
 
 				{myTurn ? <p>Your turn</p> : <p>Enemy turn</p>}
 
 				{/* Lets player know if opponent left game */}
 				{leftGame === true && (
-					<dialog open>
+					<dialog open className="nes-dialog is-rounded">
 						<h2>{opponent.username} left the game</h2>
 						<button
 							onClick={() => window.location.reload()}
-							className="btn btn-exit"
+							className="btn nes-btn is-error"
 						>
 							Exit
 						</button>
@@ -337,11 +339,11 @@ const GameBoard = ({ socket, user, opponent }) => {
 			</main>
 
 			{yourShips === 0 && (
-				<dialog>
+				<dialog open className="nes-dialog is-rounded">
 					<h2>Game Over</h2>
 					<button
 						onClick={() => window.location.reload()}
-						className="btn btn-exit"
+						className="btn nes-btn is-error"
 					>
 						Exit
 					</button>
