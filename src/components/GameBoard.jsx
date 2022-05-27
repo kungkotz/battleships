@@ -1,5 +1,5 @@
 import "../styles/GameBoard.scss";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import pirateOne from "../assets/p1.png";
 import pirateTwo from "../assets/p2.png";
 
@@ -127,87 +127,90 @@ const GameBoard = ({ socket, user, opponent }) => {
 	};
 
 	// Handling if the shot was a hit or miss on the opponent board
-	const handleShotFired = (id) => {
-		const target = id.replace("e", "y");
-		const hitBattleship = battleship.includes(target);
-		const hitCruiser = cruiser.includes(target);
-		const hitSubmarine1 = submarine1.includes(target);
-		const hitSubmarine2 = submarine2.includes(target);
+	const handleShotFired = useCallback(
+		(id) => {
+			const target = id.replace("e", "y");
+			const hitBattleship = battleship.includes(target);
+			const hitCruiser = cruiser.includes(target);
+			const hitSubmarine1 = submarine1.includes(target);
+			const hitSubmarine2 = submarine2.includes(target);
 
-		if (hitBattleship) {
-			console.log(`You shot at ${target} and it's a HIT!`);
+			if (hitBattleship) {
+				console.log(`You shot at ${target} and it's a HIT!`);
 
-			document.querySelector(`.${target}`).style.backgroundColor = "green";
-			document.querySelector(`.${target}`).style.pointerEvents = "none";
+				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
-			socket.emit("player:shot-reply", target, true);
+				socket.emit("player:shot-reply", target, true);
 
-			removePart(battleship, target);
+				removePart(battleship, target);
 
-			if (battleship.length === 0) {
-				setYourShips((prevState) => prevState - 1);
+				if (battleship.length === 0) {
+					setYourShips((prevState) => prevState - 1);
 
-				socket.emit("player:ship-sunken", 1);
+					socket.emit("player:ship-sunken", 1);
+				}
+			} else if (hitCruiser) {
+				console.log(`You shot at ${target} and it's a HIT!`);
+
+				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+				socket.emit("player:shot-reply", target, true);
+
+				removePart(cruiser, target);
+
+				if (cruiser.length === 0) {
+					setYourShips((prevState) => prevState - 1);
+
+					socket.emit("player:ship-sunken", 1);
+				}
+			} else if (hitSubmarine1) {
+				console.log(`You shot at ${target} and it's a HIT!`);
+
+				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+				socket.emit("player:shot-reply", target, true);
+
+				removePart(submarine1, target);
+
+				if (submarine1.length === 0) {
+					setYourShips((prevState) => prevState - 1);
+
+					socket.emit("player:ship-sunken", 1);
+				}
+			} else if (hitSubmarine2) {
+				console.log(`You shot at ${target} and it's a HIT!`);
+
+				document.querySelector(`.${target}`).style.backgroundColor = "green";
+				document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+				socket.emit("player:shot-reply", target, true);
+
+				removePart(submarine2, target);
+
+				if (submarine2.length === 0) {
+					setYourShips((prevState) => prevState - 1);
+
+					socket.emit("player:ship-sunken", 1);
+				}
+			} else {
+				console.log(`You shot at ${target} and it's a MISS!`);
+
+				document.querySelector(`.${target}`).style.backgroundColor = "red";
+				document.querySelector(`.${target}`).style.pointerEvents = "none";
+
+				socket.emit("player:shot-reply", target, false);
 			}
-		} else if (hitCruiser) {
-			console.log(`You shot at ${target} and it's a HIT!`);
 
-			document.querySelector(`.${target}`).style.backgroundColor = "green";
-			document.querySelector(`.${target}`).style.pointerEvents = "none";
-
-			socket.emit("player:shot-reply", target, true);
-
-			removePart(cruiser, target);
-
-			if (cruiser.length === 0) {
-				setYourShips((prevState) => prevState - 1);
-
-				socket.emit("player:ship-sunken", 1);
-			}
-		} else if (hitSubmarine1) {
-			console.log(`You shot at ${target} and it's a HIT!`);
-
-			document.querySelector(`.${target}`).style.backgroundColor = "green";
-			document.querySelector(`.${target}`).style.pointerEvents = "none";
-
-			socket.emit("player:shot-reply", target, true);
-
-			removePart(submarine1, target);
-
-			if (submarine1.length === 0) {
-				setYourShips((prevState) => prevState - 1);
-
-				socket.emit("player:ship-sunken", 1);
-			}
-		} else if (hitSubmarine2) {
-			console.log(`You shot at ${target} and it's a HIT!`);
-
-			document.querySelector(`.${target}`).style.backgroundColor = "green";
-			document.querySelector(`.${target}`).style.pointerEvents = "none";
-
-			socket.emit("player:shot-reply", target, true);
-
-			removePart(submarine2, target);
-
-			if (submarine2.length === 0) {
-				setYourShips((prevState) => prevState - 1);
-
-				socket.emit("player:ship-sunken", 1);
-			}
-		} else {
-			console.log(`You shot at ${target} and it's a MISS!`);
-
-			document.querySelector(`.${target}`).style.backgroundColor = "red";
-			document.querySelector(`.${target}`).style.pointerEvents = "none";
-
-			socket.emit("player:shot-reply", target, false);
-		}
-
-		setMyTurn(true);
-	};
+			setMyTurn(true);
+		},
+		[battleship, cruiser, socket, submarine1, submarine2]
+	);
 
 	// Handling if the shot was a hit or miss on the your board
-	const handleShotReceived = (id, boolean, ship) => {
+	const handleShotReceived = (id, boolean) => {
 		const target = id.replace("y", "e");
 
 		if (boolean === false) {
@@ -219,6 +222,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 		}
 	};
 
+	// Handling when ship has been detroyed
 	const handleSunkenShip = (id) => {
 		setEnemyShips((prevState) => prevState - id);
 	};
@@ -272,7 +276,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 			socket.off("player:ship-sunken-reply", handleSunkenShip);
 		};
-	}, [socket, user, opponent, yourShips, enemyShips]);
+	}, [handleShotFired, socket]);
 
 	useEffect(() => {
 		setMyTurn(user.turn);
@@ -287,18 +291,20 @@ const GameBoard = ({ socket, user, opponent }) => {
 						<span>{user.username}</span> vs <span>{opponent.username}</span>
 					</p>
 				) : (
-					<p>Waiting for another player...</p>
+					<dialog open className="nes-dialog is-rounded">
+						<p>Waiting for another player...</p>
+					</dialog>
 				)}
 
 				{myTurn ? <p>Your turn</p> : <p>Enemy turn</p>}
 
 				{/* Lets player know if opponent left game */}
 				{leftGame === true && (
-					<dialog open>
+					<dialog open className="nes-dialog is-rounded">
 						<h2>{opponent.username} left the game</h2>
 						<button
 							onClick={() => window.location.reload()}
-							className="btn btn-exit"
+							className="btn nes-btn is-error"
 						>
 							Exit
 						</button>
@@ -333,11 +339,11 @@ const GameBoard = ({ socket, user, opponent }) => {
 			</main>
 
 			{yourShips === 0 && (
-				<dialog>
+				<dialog open className="nes-dialog is-rounded game-over-dialog">
 					<h2>Game Over</h2>
 					<button
 						onClick={() => window.location.reload()}
-						className="btn btn-exit"
+						className="btn nes-btn is-error"
 					>
 						Exit
 					</button>

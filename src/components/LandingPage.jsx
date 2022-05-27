@@ -14,12 +14,13 @@ const LandingPage = ({ onHandleUsernameSubmit, userInput, setUserInput }) => {
 					<input
 						type="text"
 						id="username"
+						className="nes-input"
 						required
 						placeholder="Enter username..."
 						value={userInput}
 						onChange={(e) => setUserInput(e.target.value)}
 					/>
-					<button type="submit" className="btn">
+					<button type="submit" className="btn nes-btn">
 						Start Game
 					</button>
 				</div>
