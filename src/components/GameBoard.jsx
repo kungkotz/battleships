@@ -336,7 +336,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 						</div>
 					)}
 
-					<div className="yourBoard">{yourDivs}</div>
+					<div className="yourBoard battleboard">{yourDivs}</div>
 				</section>
 				<section>
 					{user && opponent && (
@@ -347,7 +347,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 						</div>
 					)}
 
-					<div className="enemyBoard" onClick={clickOnGrid}>
+					<div className="enemyBoard battleboard" onClick={clickOnGrid}>
 						{enemyDivs}
 					</div>
 				</section>

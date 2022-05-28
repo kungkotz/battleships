@@ -6,6 +6,7 @@
 
 .container {
 	position: relative;
+	max-height: 100vh;
 
 	header {
 		.waiting {
@@ -53,17 +54,25 @@
 			display: flex;
 			justify-content: left;
 			align-items: center;
-			gap: 1rem;
+			gap: 2rem;
 
 			padding: 1rem 0rem;
 
 			.avatar {
 				width: clamp(1rem, 4vw, 5rem);
+				flex-shrink: 4;
 			}
 
 			h3 {
 				font-size: clamp(0.75rem, 5vw, 2rem);
 				flex-grow: 1;
+				margin: 0;
+				text-align: left;
+			}
+
+			p {
+				margin: 0;
+				flex-shrink: 1;
 			}
 		}
 	}
@@ -81,10 +90,10 @@
 	}
 }
 
-.yourBoard {
+.battleboard {
 	// border: 1px solid rgba(92, 92, 92, 0.452);
-	height: 40rem;
-	width: 40rem;
+	height: clamp(10rem, 40vw, 40rem);
+	width: clamp(10rem, 40vw, 40rem);
 	display: grid;
 	grid-template-columns: repeat(10, 1fr);
 	grid-template-rows: repeat(10, 1fr);
@@ -93,27 +102,7 @@
 	div {
 		border: 1px dashed rgba(92, 92, 92, 0.452);
 		border-radius: 0.25rem;
-		background-color: rgb(74, 165, 250);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 2rem;
-	}
-}
-
-.enemyBoard {
-	// border: 1px solid rgba(92, 92, 92, 0.452);
-	height: 40rem;
-	width: 40rem;
-	display: grid;
-	grid-template-columns: repeat(10, 1fr);
-	grid-template-rows: repeat(10, 1fr);
-	grid-column-gap: 0px;
-	grid-row-gap: 0px;
-	div {
-		border: 1px dashed rgba(92, 92, 92, 0.452);
-		border-radius: 0.25rem;
-		background-color: rgb(74, 165, 250);
+		background-color: rgba(74, 165, 250, 0.959);
 		display: flex;
 		justify-content: center;
 		align-items: center;
