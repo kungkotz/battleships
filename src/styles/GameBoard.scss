@@ -6,6 +6,7 @@
 
 .container {
 	position: relative;
+	max-height: 100vh;
 
 	header {
 		.waiting {
@@ -53,17 +54,25 @@
 			display: flex;
 			justify-content: left;
 			align-items: center;
-			gap: 1rem;
+			gap: 2rem;
 
 			padding: 1rem 0rem;
 
 			.avatar {
 				width: clamp(1rem, 4vw, 5rem);
+				flex-shrink: 4;
 			}
 
 			h3 {
 				font-size: clamp(0.75rem, 5vw, 2rem);
 				flex-grow: 1;
+				margin: 0;
+				text-align: left;
+			}
+
+			p {
+				margin: 0;
+				flex-shrink: 1;
 			}
 		}
 	}
