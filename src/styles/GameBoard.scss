@@ -92,8 +92,8 @@
 
 .yourBoard {
 	// border: 1px solid rgba(92, 92, 92, 0.452);
-	height: 40rem;
-	width: 40rem;
+	height: clamp(10rem, 40vw, 40rem);
+	width: clamp(10rem, 40vw, 40rem);
 	display: grid;
 	grid-template-columns: repeat(10, 1fr);
 	grid-template-rows: repeat(10, 1fr);
@@ -112,8 +112,8 @@
 
 .enemyBoard {
 	// border: 1px solid rgba(92, 92, 92, 0.452);
-	height: 40rem;
-	width: 40rem;
+	height: clamp(10rem, 40vw, 40rem);
+	width: clamp(10rem, 40vw, 40rem);
 	display: grid;
 	grid-template-columns: repeat(10, 1fr);
 	grid-template-rows: repeat(10, 1fr);
