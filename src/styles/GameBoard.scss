@@ -90,7 +90,7 @@
 	}
 }
 
-.yourBoard {
+.battleboard {
 	// border: 1px solid rgba(92, 92, 92, 0.452);
 	height: clamp(10rem, 40vw, 40rem);
 	width: clamp(10rem, 40vw, 40rem);
@@ -102,27 +102,7 @@
 	div {
 		border: 1px dashed rgba(92, 92, 92, 0.452);
 		border-radius: 0.25rem;
-		background-color: rgb(74, 165, 250);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		font-size: 2rem;
-	}
-}
-
-.enemyBoard {
-	// border: 1px solid rgba(92, 92, 92, 0.452);
-	height: clamp(10rem, 40vw, 40rem);
-	width: clamp(10rem, 40vw, 40rem);
-	display: grid;
-	grid-template-columns: repeat(10, 1fr);
-	grid-template-rows: repeat(10, 1fr);
-	grid-column-gap: 0px;
-	grid-row-gap: 0px;
-	div {
-		border: 1px dashed rgba(92, 92, 92, 0.452);
-		border-radius: 0.25rem;
-		background-color: rgb(74, 165, 250);
+		background-color: rgba(74, 165, 250, 0.959);
 		display: flex;
 		justify-content: center;
 		align-items: center;
