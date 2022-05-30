@@ -21,6 +21,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	const [myTurn, setMyTurn] = useState();
 
+	const [errorBox, setErrorBox] = useState(false);
+
+	const handleClose = () => {
+		setErrorBox(false);
+	};
+
 	/* Generates your ships */
 	const generateYourShips = (squares, extra) => {
 		let ship = [];
@@ -120,7 +126,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 					"none";
 				setMyTurn(false);
 			} catch (e) {
-				alert("something went wrong");
+				setErrorBox(true);
 			}
 		}
 	};
@@ -382,6 +388,23 @@ const GameBoard = ({ socket, user, opponent }) => {
 					>
 						Exit
 					</button>
+				</dialog>
+			)}
+
+			{errorBox && (
+				<dialog open className="nes-dialog is-rounded">
+					<h2 className="nes-text ">
+						You cant soot at the same spot twice!
+						<br />
+						<br />
+						<div>
+							<button onClick={handleClose} type="button" class="nes-btn ">
+								Close
+							</button>
+							<br />
+							<br />
+						</div>
+					</h2>
 				</dialog>
 			)}
 		</div>
