@@ -114,9 +114,14 @@ const GameBoard = ({ socket, user, opponent }) => {
 	// handles click
 	const clickOnGrid = (e) => {
 		if (myTurn) {
-			socket.emit("player:shot-fired", e.target.className);
-
-			setMyTurn(false);
+			try {
+				socket.emit("player:shot-fired", e.target.className);
+				document.querySelector(`.${e.target.className}`).style.pointerEvents =
+					"none";
+				setMyTurn(false);
+			} catch (e) {
+				alert("something went wrong");
+			}
 		}
 	};
 
