@@ -23,8 +23,14 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	const [errorBox, setErrorBox] = useState(false);
 
-	const handleClose = () => {
+	const [myTurnBox, setMyTurnBox] = useState(true);
+
+	const handleCloseError = () => {
 		setErrorBox(false);
+	};
+
+	const closeTurnBox = () => {
+		setMyTurnBox(false);
 	};
 
 	/* Generates your ships */
@@ -398,13 +404,25 @@ const GameBoard = ({ socket, user, opponent }) => {
 						<br />
 						<br />
 						<div>
-							<button onClick={handleClose} type="button" class="nes-btn ">
+							<button onClick={handleCloseError} type="button" class="nes-btn ">
 								Close
 							</button>
 							<br />
 							<br />
 						</div>
 					</h2>
+				</dialog>
+			)}
+
+			{myTurn && myTurnBox && (
+				<dialog open className="nes-dialog is-rounded">
+					<h1 className="nes-text ">Your turn to shoot!</h1>
+
+					<div>
+						<button onClick={closeTurnBox} type="button" class="nes-btn ">
+							Okay
+						</button>
+					</div>
 				</dialog>
 			)}
 		</div>
