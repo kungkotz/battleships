@@ -71,28 +71,21 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 		if (ship.length === 4 && extra === "single") {
 			tehShips.push(...ship);
-			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setBattleship((battleship) => [...battleship, ...ship]);
 		}
 
 		if (ship.length === 3 && extra === "single") {
-			// console.log("cruiser är pushad");
 			tehShips.push(...ship);
-			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setCruiser((cruiser) => [...cruiser, ...ship]);
 		}
 
 		if (ship.length === 2 && extra === "single") {
-			// console.log("ubåt1 är pushad");
 			tehShips.push(...ship);
-			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setSubmarine1((submarine1) => [...submarine1, ...ship]);
 		}
 
 		if (ship.length === 2 && extra === "double") {
-			// console.log("ubåt2 är pushad");
 			tehShips.push(...ship);
-			// setYourShips((yourShips) => [...yourShips, ...ship]);
 			return setSubmarine2((submarine2) => [...submarine2, ...ship]);
 		}
 	};
@@ -101,11 +94,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const generateYourDivs = () => {
 		const yourDivBoxes = [];
 		for (let i = 0; i < 100; i++) {
-			yourDivBoxes.push(
-				<div className={`y${i}`} key={`${i}`}>
-					{/* {i} */}
-				</div>
-			);
+			yourDivBoxes.push(<div className={`y${i}`} key={`${i}`}></div>);
 		}
 		return setYourDivs((yourDivs) => [...yourDivs, ...yourDivBoxes]);
 	};
@@ -114,11 +103,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const generateEnemyDivs = () => {
 		const enemyDivBoxes = [];
 		for (let i = 0; i < 100; i++) {
-			enemyDivBoxes.push(
-				<div className={`e${i}`} key={`${i}`}>
-					{/* {i} */}
-				</div>
-			);
+			enemyDivBoxes.push(<div className={`e${i}`} key={`${i}`}></div>);
 		}
 		return setEnemyDivs((enemyDivs) => [...enemyDivs, ...enemyDivBoxes]);
 	};
@@ -157,9 +142,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 			const hitSubmarine2 = submarine2.includes(target);
 
 			if (hitBattleship) {
-				console.log(`You shot at ${target} and it's a HIT!`);
-
-				// document.querySelector(`.${target}`).style.backgroundColor = "green";
 				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
@@ -173,9 +155,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 					socket.emit("player:ship-sunken", 1);
 				}
 			} else if (hitCruiser) {
-				console.log(`You shot at ${target} and it's a HIT!`);
-
-				// document.querySelector(`.${target}`).style.backgroundColor = "green";
 				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
@@ -189,9 +168,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 					socket.emit("player:ship-sunken", 1);
 				}
 			} else if (hitSubmarine1) {
-				console.log(`You shot at ${target} and it's a HIT!`);
-
-				// document.querySelector(`.${target}`).style.backgroundColor = "green";
 				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
@@ -205,9 +181,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 					socket.emit("player:ship-sunken", 1);
 				}
 			} else if (hitSubmarine2) {
-				console.log(`You shot at ${target} and it's a HIT!`);
-
-				// document.querySelector(`.${target}`).style.backgroundColor = "green";
 				document.querySelector(`.${target}`).innerHTML = "💥";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
@@ -221,9 +194,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 					socket.emit("player:ship-sunken", 1);
 				}
 			} else {
-				console.log(`You shot at ${target} and it's a MISS!`);
-
-				// document.querySelector(`.${target}`).style.backgroundColor = "red";
 				document.querySelector(`.${target}`).innerHTML = "❌";
 				document.querySelector(`.${target}`).style.pointerEvents = "none";
 
@@ -240,11 +210,9 @@ const GameBoard = ({ socket, user, opponent }) => {
 		const target = id.replace("y", "e");
 
 		if (boolean === false) {
-			// document.querySelector(`.${target}`).style.backgroundColor = "red";
 			document.querySelector(`.${target}`).innerHTML = "❌";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 		} else {
-			// document.querySelector(`.${target}`).style.backgroundColor = "green";
 			document.querySelector(`.${target}`).innerHTML = "💥";
 			document.querySelector(`.${target}`).style.pointerEvents = "none";
 		}
@@ -279,7 +247,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 			for (let i = 0; i < allShips.length; i++) {
 				let myBoatCoord = allShips[i];
 				document.querySelector(`.${myBoatCoord}`).style.backgroundColor =
-					"#3f3f3f";
+					"#562503";
 			}
 		};
 
