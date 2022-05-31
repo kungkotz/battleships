@@ -64,13 +64,14 @@
 			}
 
 			h3 {
-				font-size: clamp(0.75rem, 5vw, 2rem);
+				font-size: clamp(0.75rem, 5vw, 1.25rem);
 				flex-grow: 1;
 				margin: 0;
 				text-align: left;
 			}
 
 			p {
+				font-size: clamp(0.5rem, 4vw, 0.75rem);
 				margin: 0;
 				flex-shrink: 1;
 			}
