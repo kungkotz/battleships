@@ -1,4 +1,4 @@
-# Battleship Game Client
+# Battleship Game - Client
 
 An assignment developed by [Alexander Kocman](https://github.com/kungkotz), [Gustaf Grönlund](https://github.com/GustafGronlund) and [Raymond Lam](https://github.com/R4YLx).
 You can try our version of Battleship @ [https://8bit-battleship.netlify.app/](https://8bit-battleship.netlify.app/).
@@ -24,7 +24,7 @@ Build the classic multiplayer game Battleship in a group of three while using ag
 #### Requirement
 
 - React for front end
-- Node.js and Scoket.io for back end
+- Node.js and Socket.io for back end
 - Randomize ship location on grid
 - Show how many ships there's left
 - Players should take turns shooting
@@ -52,7 +52,7 @@ Build the classic multiplayer game Battleship in a group of three while using ag
 
 To run the app you have to:
 
-1. Ddd an .env file containing:
+1. Add an .env file containing:
    "_REACT_APP_SOCKET_URL=http://localhost:4000_"
 
 2. Open terminal and run:
