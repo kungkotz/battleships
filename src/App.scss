@@ -36,6 +36,7 @@
 }
 
 .landing-page {
+	min-height: 100vh;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -43,12 +44,12 @@
 
 	.container {
 		margin-top: 5rem;
-		margin-bottom: 3rem;
+		margin-bottom: 2rem;
 		flex: 0 0 100%;
 	}
 
 	h1 {
-		font-size: clamp(2rem, 8vw, 8rem);
+		font-size: clamp(2rem, 8vw, 6rem);
 
 		background: -webkit-linear-gradient(rgb(0, 60, 255), #108de0);
 		-webkit-background-clip: text;
