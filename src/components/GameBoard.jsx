@@ -125,6 +125,10 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	// handles click
 	const clickOnGrid = (e) => {
+		if (enemyShips === 0 || yourShips === 0) {
+			document.querySelector(`yourBoard battleboard`).style.pointerEvents =
+				"none";
+		}
 		if (myTurn) {
 			try {
 				socket.emit("player:shot-fired", e.target.className);
