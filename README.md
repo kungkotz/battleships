@@ -29,7 +29,10 @@ Build the classic multiplayer game Battleship in a group of three while using ag
 - Show how many ships there's left
 - Players should take turns shooting
 - Players should be able to see if it's a hit or miss
-- 4 ships: - 1 ship occupying 4 boxes - 1 ship occupying 3 boxes - 2 ships occupying 2 boxes
+- 4 ships:
+  - 1 ship occupying 4 boxes
+  - 1 ship occupying 3 boxes
+  - 2 ships occupying 2 boxes
 
 #### Time limit
 
@@ -50,14 +53,13 @@ Build the classic multiplayer game Battleship in a group of three while using ag
 To run the app you have to:
 
 1. Ddd an .env file containing:
-   _REACT_APP_SOCKET_URL=http://localhost:4000_
+   "_REACT_APP_SOCKET_URL=http://localhost:4000_"
 
 2. Open terminal and run:
 
 ```
    npm install
    npm start
-
 ```
 
 Don't forget to run the server as well.
@@ -69,4 +71,6 @@ You may also see any lint errors in the console.
 
 ## Printscreen
 
-<img src="" width=100%>
+<img src="https://github.com/kungkotz/battleships-client/blob/dev/src/assets/scrn-1.png" width=50%>
+
+<img src="https://github.com/kungkotz/battleships-client/blob/dev/src/assets/scrn-2.png" width=50%>
