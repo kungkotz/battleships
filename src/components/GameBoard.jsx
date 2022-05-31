@@ -21,6 +21,18 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	const [myTurn, setMyTurn] = useState();
 
+	const [errorBox, setErrorBox] = useState(false);
+
+	const [myTurnBox, setMyTurnBox] = useState(true);
+
+	const handleCloseError = () => {
+		setErrorBox(false);
+	};
+
+	const closeTurnBox = () => {
+		setMyTurnBox(false);
+	};
+
 	/* Generates your ships */
 	const generateYourShips = (squares, extra) => {
 		let ship = [];
@@ -113,10 +125,19 @@ const GameBoard = ({ socket, user, opponent }) => {
 
 	// handles click
 	const clickOnGrid = (e) => {
+		if (enemyShips === 0 || yourShips === 0) {
+			document.querySelector(`yourBoard battleboard`).style.pointerEvents =
+				"none";
+		}
 		if (myTurn) {
-			socket.emit("player:shot-fired", e.target.className);
-
-			setMyTurn(false);
+			try {
+				socket.emit("player:shot-fired", e.target.className);
+				document.querySelector(`.${e.target.className}`).style.pointerEvents =
+					"none";
+				setMyTurn(false);
+			} catch (e) {
+				setErrorBox(true);
+			}
 		}
 	};
 
@@ -377,6 +398,35 @@ const GameBoard = ({ socket, user, opponent }) => {
 					>
 						Exit
 					</button>
+				</dialog>
+			)}
+
+			{errorBox && (
+				<dialog open className="nes-dialog is-rounded">
+					<h2 className="nes-text ">
+						You cant soot at the same spot twice!
+						<br />
+						<br />
+						<div>
+							<button onClick={handleCloseError} type="button" class="nes-btn ">
+								Close
+							</button>
+							<br />
+							<br />
+						</div>
+					</h2>
+				</dialog>
+			)}
+
+			{myTurn && myTurnBox && (
+				<dialog open className="nes-dialog is-rounded">
+					<h1 className="nes-text ">Your turn to shoot!</h1>
+
+					<div>
+						<button onClick={closeTurnBox} type="button" class="nes-btn ">
+							Okay
+						</button>
+					</div>
 				</dialog>
 			)}
 		</div>
