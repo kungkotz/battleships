@@ -4,13 +4,17 @@ const LandingPage = ({ onHandleUsernameSubmit, userInput, setUserInput }) => {
 	return (
 		<div className="landing-page">
 			<div className="container">
-				<h1>BATTLESHIP</h1>
+				<h1 className="animate__animated animate__fadeInDown">BATTLESHIP</h1>
 
-				<img src={ShipImg} alt="Battleship" className="shipImage" />
+				<img
+					src={ShipImg}
+					alt="Battleship"
+					className="shipImage animate__animated animate__fadeInLeftBig"
+				/>
 			</div>
 
 			<form onSubmit={onHandleUsernameSubmit}>
-				<div className="form-group">
+				<div className="form-group animate__animated animate__fadeInUp">
 					<input
 						type="text"
 						id="username"

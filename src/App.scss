@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+@import "animate.css";
 
 *,
 ::before,
@@ -7,6 +8,11 @@
 	padding: 0;
 	box-sizing: border-box;
 	font-family: "Press Start 2P", cursive;
+}
+
+:root {
+	--animate-duration: 3500ms;
+	--animate-delay: 0.9s;
 }
 
 .App {
@@ -47,8 +53,16 @@
 		align-items: stretch;
 		gap: 0.5rem;
 
-		input[type="text"] {
-			text-indent: 0.5rem;
+		input {
+			border-image-repeat: inherit;
+
+			input[type="text"] {
+				text-indent: 0.5rem;
+			}
+		}
+
+		button {
+			border-image-repeat: inherit;
 		}
 	}
 }
