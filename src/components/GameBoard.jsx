@@ -29,10 +29,6 @@ const GameBoard = ({ socket, user, opponent }) => {
 		setErrorBox(false);
 	};
 
-	const closeTurnBox = () => {
-		setMyTurnBox(false);
-	};
-
 	/* Generates your ships */
 	const generateYourShips = (squares, extra) => {
 		let ship = [];
@@ -108,12 +104,21 @@ const GameBoard = ({ socket, user, opponent }) => {
 		return setEnemyDivs((enemyDivs) => [...enemyDivs, ...enemyDivBoxes]);
 	};
 
+	useEffect(() => {
+		setTimeout(() => {
+			document.querySelector(".turn-popup").display = "none";
+		}, 1500);
+
+		setMyTurnBox(false);
+	}, [myTurnBox]);
+
 	// handles click
 	const clickOnGrid = (e) => {
 		if (enemyShips === 0 || yourShips === 0) {
 			document.querySelector(`yourBoard battleboard`).style.pointerEvents =
 				"none";
 		}
+
 		if (myTurn) {
 			try {
 				socket.emit("player:shot-fired", e.target.className);
@@ -277,6 +282,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	useEffect(() => {
 		setMyTurn(user.turn);
 	}, [user]);
+
 	return (
 		<div className="container">
 			<header>
@@ -386,15 +392,9 @@ const GameBoard = ({ socket, user, opponent }) => {
 				</dialog>
 			)}
 
-			{myTurn && myTurnBox && (
-				<dialog open className="nes-dialog is-rounded">
+			{myTurn && !myTurnBox && (
+				<dialog open className="nes-dialog is-rounded turn-popup">
 					<h1 className="nes-text ">Your turn to shoot!</h1>
-
-					<div>
-						<button onClick={closeTurnBox} type="button" class="nes-btn ">
-							Okay
-						</button>
-					</div>
 				</dialog>
 			)}
 		</div>
