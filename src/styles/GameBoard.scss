@@ -110,3 +110,13 @@
 		font-size: 2rem;
 	}
 }
+
+.enemyBoard > * {
+  transition: 0.3s all ease-in-out;
+  display: grid;
+  place-content: center;
+}
+
+.enemyBoard > *:hover {
+  opacity: 0.8;
+}

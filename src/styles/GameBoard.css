@@ -1,0 +1,157 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.container {
+  position: relative;
+  max-height: 100vh;
+}
+
+.container header .waiting {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  padding: 4rem;
+  -webkit-box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+          box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+}
+
+.container header .waiting p {
+  font-size: 1.125rem;
+  color: #000000be;
+  font-style: italic;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
+.container header dialog {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+          box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+}
+
+.container header dialog p {
+  font-size: 1.125rem;
+  color: #42424271;
+  font-style: italic;
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
+.container header h2 {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
+.container main {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.container main .player-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: left;
+      -ms-flex-pack: left;
+          justify-content: left;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 2rem;
+  padding: 1rem 0rem;
+}
+
+.container main .player-container .avatar {
+  width: clamp(1rem, 4vw, 5rem);
+  -ms-flex-negative: 4;
+      flex-shrink: 4;
+}
+
+.container main .player-container h3 {
+  font-size: clamp(0.75rem, 5vw, 1.25rem);
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  margin: 0;
+  text-align: left;
+}
+
+.container main .player-container p {
+  font-size: clamp(0.5rem, 4vw, 0.75rem);
+  margin: 0;
+  -ms-flex-negative: 1;
+      flex-shrink: 1;
+}
+
+.container .game-over-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  -webkit-box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+          box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+}
+
+.container .game-over-dialog p {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+}
+
+.battleboard {
+  height: clamp(10rem, 40vw, 40rem);
+  width: clamp(10rem, 40vw, 40rem);
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[10];
+      grid-template-columns: repeat(10, 1fr);
+  -ms-grid-rows: (1fr)[10];
+      grid-template-rows: repeat(10, 1fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.battleboard div {
+  border: 1px dashed rgba(92, 92, 92, 0.452);
+  border-radius: 0.25rem;
+  background-color: rgba(74, 165, 250, 0.959);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 2rem;
+}
+
+.enemyBoard > * {
+  -webkit-transition: 0.3s all ease-in-out;
+  transition: 0.3s all ease-in-out;
+  display: -ms-grid;
+  display: grid;
+  place-content: center;
+}
+
+.enemyBoard > *:hover {
+  opacity: 0.8;
+}
+/*# sourceMappingURL=GameBoard.css.map */
