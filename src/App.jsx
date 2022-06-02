@@ -34,10 +34,6 @@ function App() {
 				setOpponent(otherSocket);
 			}
 		});
-
-		socket.on("game:full", (playersArray) => {
-			setUsername(playersArray.length);
-		});
 	}, [opponent, user, username]);
 
 	useEffect(() => {}, []);
