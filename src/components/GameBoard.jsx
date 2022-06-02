@@ -20,17 +20,10 @@ const GameBoard = ({ socket, user, opponent }) => {
 	const [submarine2, setSubmarine2] = useState([]);
 
 	const [myTurn, setMyTurn] = useState();
-
 	const [errorBox, setErrorBox] = useState(false);
-
-	const [myTurnBox, setMyTurnBox] = useState(true);
 
 	const handleCloseError = () => {
 		setErrorBox(false);
-	};
-
-	const closeTurnBox = () => {
-		setMyTurnBox(false);
 	};
 
 	/* Generates your ships */
@@ -120,6 +113,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 				document.querySelector(`.${e.target.className}`).style.pointerEvents =
 					"none";
 				setMyTurn(false);
+				setErrorBox(false);
 			} catch (e) {
 				setErrorBox(true);
 			}
@@ -277,6 +271,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 	useEffect(() => {
 		setMyTurn(user.turn);
 	}, [user]);
+
 	return (
 		<div className="container">
 			<header>
@@ -290,12 +285,12 @@ const GameBoard = ({ socket, user, opponent }) => {
 				)}
 
 				{myTurn ? (
-					<div>
+					<div className="turn">
 						<p>Blow The Man Down!</p>
 						<p>Your turn</p>
 					</div>
 				) : (
-					<div>
+					<div className="turn">
 						<p>Wait Ye Seadog!</p>
 						<p>Enemy turn</p>
 					</div>
@@ -336,7 +331,14 @@ const GameBoard = ({ socket, user, opponent }) => {
 						</div>
 					)}
 
-					<div className="enemyBoard battleboard" onClick={clickOnGrid}>
+					<div
+						className={
+							myTurn
+								? "enemyBoard battleboard"
+								: "enemyBoard battleboard inactive"
+						}
+						onClick={clickOnGrid}
+					>
 						{enemyDivs}
 					</div>
 				</section>
@@ -358,7 +360,7 @@ const GameBoard = ({ socket, user, opponent }) => {
 			{enemyShips === 0 && (
 				<dialog open className="nes-dialog is-rounded game-over-dialog">
 					<h2>Shiver Me Timbers!</h2>
-					<p>We have booty to claim.</p>
+					<p>We have booty to claim. Victory!</p>
 					<p></p>
 					<button
 						onClick={() => window.location.reload()}
@@ -372,29 +374,21 @@ const GameBoard = ({ socket, user, opponent }) => {
 			{errorBox && (
 				<dialog open className="nes-dialog is-rounded">
 					<h2 className="nes-text ">
-						You cant soot at the same spot twice!
+						You can't shoot at the same spot twice matey!
 						<br />
 						<br />
 						<div>
-							<button onClick={handleCloseError} type="button" class="nes-btn ">
+							<button
+								onClick={handleCloseError}
+								type="button"
+								className="nes-btn "
+							>
 								Close
 							</button>
 							<br />
 							<br />
 						</div>
 					</h2>
-				</dialog>
-			)}
-
-			{myTurn && myTurnBox && (
-				<dialog open className="nes-dialog is-rounded">
-					<h1 className="nes-text ">Your turn to shoot!</h1>
-
-					<div>
-						<button onClick={closeTurnBox} type="button" class="nes-btn ">
-							Okay
-						</button>
-					</div>
 				</dialog>
 			)}
 		</div>

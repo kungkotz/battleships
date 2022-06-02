@@ -52,9 +52,7 @@ function App() {
 
 				<button
 					className={!isMuted ? "nes-btn is-error" : "nes-btn is-success"}
-					onClick={() =>
-						setIsMuted(!isMuted, console.log(`state of this button ${isMuted}`))
-					}
+					onClick={() => setIsMuted(!isMuted)}
 				>
 					{!isMuted ? "Mute" : "Unmute"}
 				</button>
@@ -73,14 +71,6 @@ function App() {
 					userInput={userInput}
 					setUserInput={setUserInput}
 				/>
-			)}
-
-			{/* If there is an ongoing game this will show */}
-			{fullGame && username === 0 && (
-				<dialog open className="alert">
-					<h2>Avast ye! Ongoing battle...</h2>
-					<p className="muted">try again later</p>
-				</dialog>
 			)}
 		</div>
 	);

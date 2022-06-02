@@ -9,6 +9,14 @@
 	max-height: 100vh;
 
 	header {
+		h1 {
+			font-size: clamp(2rem, 6vw, 4rem);
+
+			background: -webkit-linear-gradient(rgb(0, 60, 255), #108de0);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+
 		.waiting {
 			position: absolute;
 			top: 50%;
@@ -16,6 +24,7 @@
 			transform: translate(-50%, -50%);
 			padding: 4rem;
 			box-shadow: 12px 12px 2px 1px rgba(0, 0, 255, 0.2);
+			z-index: 100;
 
 			p {
 				font-size: 1.125rem;
@@ -43,6 +52,12 @@
 		h2 {
 			flex-basis: 100%;
 		}
+
+		.turn {
+			p {
+				font-size: clamp(0.5rem, 2vw, 1rem);
+			}
+		}
 	}
 
 	main {
@@ -64,7 +79,7 @@
 			}
 
 			h3 {
-				font-size: clamp(0.75rem, 5vw, 1.25rem);
+				font-size: clamp(0.75rem, 5vw, 1.125rem);
 				flex-grow: 1;
 				margin: 0;
 				text-align: left;
@@ -111,12 +126,20 @@
 	}
 }
 
+.inactive {
+	filter: opacity(60%) blur(0.125rem);
+
+	&.enemyBoard > *:hover {
+		opacity: 1;
+	}
+}
+
 .enemyBoard > * {
-  transition: 0.3s all ease-in-out;
-  display: grid;
-  place-content: center;
+	transition: 0.3s all ease-in-out;
+	display: grid;
+	place-content: center;
 }
 
 .enemyBoard > *:hover {
-  opacity: 0.8;
+	opacity: 0.8;
 }
