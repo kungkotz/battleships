@@ -13,7 +13,7 @@ function App() {
 
 	const [user, setUser] = useState("");
 	const [opponent, setOpponent] = useState("");
-	const [fullGame, setFullGame] = useState(false);
+
 	const [isMuted, setIsMuted] = useState(false);
 
 	// Handles username when player submits
@@ -35,8 +35,7 @@ function App() {
 			}
 		});
 
-		socket.on("game:full", (boolean, playersArray) => {
-			setFullGame(boolean);
+		socket.on("game:full", (playersArray) => {
 			setUsername(playersArray.length);
 		});
 	}, [opponent, user, username]);
